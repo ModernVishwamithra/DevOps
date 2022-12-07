@@ -1,0 +1,56 @@
+# this file is used to declare variables for all the files
+
+variable "env" {
+    type = string
+    default = "env"
+    description = "Name of Environment"
+}
+
+variable "cidr_block_vpc1" {
+    type = string
+    default = "10.1.0.0/16"
+    description = "Name of cidr_block -vpc1"
+}
+
+variable "cidr_block_vpc2" {
+    type = string
+    default = "10.2.0.0/16"
+    description = "Name of cidr_block -vpc2"
+}
+
+variable "cidr_block_vpc3" {
+    type = string
+    default = "10.3.0.0/16"
+    description = "Name of cidr_block -vpc3"
+}
+
+variable "cidr_block_public-subnet-1" {
+    type = string
+    default = "10.1.10.0/24"
+    description = "Name of cidr_block public-subnet-1"
+}
+
+variable "cidr_block_public-subnet-2" {
+    type = string
+    default = "10.1.20.0/24"
+    description = "Name of cidr_block public-subnet-2"
+}
+
+variable "cidr_block_public-subnet-3" {
+    type = string
+    default = "10.1.30.0/24"
+    description = "Name of cidr_block public-subnet-3"
+}
+
+
+variable "igw_name" {
+    type = string
+    default = "testvpc1-igw"
+    description = "Name of cidr_block"
+}
+
+variable "routing_table_name_public" {
+    type = string
+    default = "Public Routing Table"
+    description = "Name of Routing table"
+}
