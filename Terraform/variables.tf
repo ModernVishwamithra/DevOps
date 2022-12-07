@@ -1,70 +1,26 @@
 # this file is used to declare variables for all the files
+# but we have not given any values, the values are given in "terraform.tfvar" file
 
-variable "env" {
-  type        = string
-  default     = "env"
-  description = "Name of Environment"
-}
+variable "env" {}
 
-variable "cidr_block_vpc1" {
-  type        = string
-  default     = "10.1.0.0/16"
-  description = "Name of cidr_block -vpc1"
-}
+variable "cidr_block_vpc1" {}
 
-variable "cidr_block_vpc2" {
-  type        = string
-  default     = "10.2.0.0/16"
-  description = "Name of cidr_block -vpc2"
-}
+variable "cidr_block_vpc2" {}
 
-variable "cidr_block_vpc3" {
-  type        = string
-  default     = "10.3.0.0/16"
-  description = "Name of cidr_block -vpc3"
-}
+variable "cidr_block_vpc3" {}
 
-variable "cidr_block_public-subnet-1" {
-  type        = string
-  default     = "10.1.10.0/24"
-  description = "CIDR of public-subnet-1"
-}
+variable "cidr_block_public-subnet-1" {}
 
-variable "cidr_block_public-subnet-2" {
-  type        = string
-  default     = "10.1.20.0/24"
-  description = "CIDR of public-subnet-2"
-}
+variable "cidr_block_public-subnet-2" {}
 
-variable "cidr_block_public-subnet-3" {
-  type        = string
-  default     = "10.1.30.0/24"
-  description = "CIDR of public-subnet-3"
-}
-variable "public-subnet-1-name" {
-  type        = string
-  default     = "public-subnet-1"
-  description = "Name of public-subnet-1"
-}
-variable "public-subnet-2-name" {
-  type        = string
-  default     = "public-subnet-2"
-  description = "Name of public-subnet-2"
-}
-variable "public-subnet-3-name" {
-  type        = string
-  default     = "public-subnet-3"
-  description = "Name of public-subnet-3"
-}
+variable "cidr_block_public-subnet-3" {}
 
-variable "igw_name" {
-  type        = string
-  default     = "testvpc1-igw"
-  description = "Name of cidr_block"
-}
+variable "public-subnet-1-name" {}
 
-variable "routing_table_name_public" {
-  type        = string
-  default     = "Public-Routing-Table"
-  description = "Name of Routing table"
-}
+variable "public-subnet-2-name" {}
+
+variable "public-subnet-3-name" {}
+
+variable "igw_name" {}
+
+variable "routing_table_name_public" {}
