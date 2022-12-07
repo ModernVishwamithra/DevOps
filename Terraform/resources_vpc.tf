@@ -9,13 +9,13 @@
 
 
 resource "aws_vpc" "testvpc1" {
-  cidr_block           = "${var.cidr_block_vpc1}" //old way of giving variables
+  cidr_block           = var.cidr_block_vpc1 //old way of giving variables
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = {
     Name        = "main1"
     Owner       = "Pavan"
-    Environment = var.env 
+    Environment = var.env
   }
 }
 
