@@ -11,3 +11,10 @@ terraform destroy - destroys all the resources created by terraform as per the s
     - there are few ways to detroy resource(s)
     * One way is delete the particular resource code or comment it , run 'terraform apply', it will checks with state file and destroys the resource as it is not present in the code
     ** Other way is using 'terraform destroy -target <resource-name>' and delete the code 
+
+A scenario i faced- i was working with terrform and i run command "terraform apply" in linux machine, i am using dynamoDB state locking
+Now state is locked. suddenly power down and wifi disconned while terraform promting to enter "yes" for applying changes.
+When i connected network, i restarted server again i run "terraform apply", it shows the terraform state is locked by same linux server
+so i found that a command is used to force unlock the state of terraform,
+
+terraform force-unlock LOCK_ID - we have to provide state lock id to force unlock
