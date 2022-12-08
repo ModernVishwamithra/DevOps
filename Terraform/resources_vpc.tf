@@ -35,7 +35,7 @@ resource "aws_vpc" "testvpc3" {
   enable_dns_hostnames = true
   enable_dns_support   = true
   tags = {
-    Name        = "main3"
+    Name        = "testvpc3"
     Owner       = "Pavan"
     Environment = var.env
   }
