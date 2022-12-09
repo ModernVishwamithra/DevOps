@@ -1,4 +1,4 @@
-imagename = "ami-04e74eee4c8aab81c"
+imagename = "ami-0283a57753b18025b"
 instanceType = "t2.micro"
 instance_availability_zone = "us-east-2a"
 keypair = "msi-keypair"
