@@ -1,0 +1,8 @@
+When we open terraform documentaion(https://registry.terraform.io/providers/hashicorp/aws/latest/docs), 
+we can see two headings for most of the resources
+1. Resources -When we want to create a resource using terraform we need to go to this part
+2. Data Sources - when we want to import a existing resource into terraform, we use this one
+
+under each resource for parameters/arguments reference again we have two headings
+1. Argument Reference - refer this to create resources
+2. Attributes Reference - refer this to import a resource(when we want to read/export the values)
