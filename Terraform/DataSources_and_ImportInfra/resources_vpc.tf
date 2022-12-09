@@ -52,6 +52,3 @@ resource "aws_vpc" "testvpc3" {
 #   }
 # }
 
-data "aws_vpc" "ohio-vpc" {
-  id = var.vpc_id
-}
