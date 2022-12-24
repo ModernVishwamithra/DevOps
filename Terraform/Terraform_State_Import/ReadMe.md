@@ -1,0 +1,2 @@
+As we have imported terraform state and creating resources using its output, we need to initiate terraform, when we try to do *** terrafom init -backend-config="backend_config.json" *** it wont work
+we have to initiate by using *** aws configure *** command and provide the credentials

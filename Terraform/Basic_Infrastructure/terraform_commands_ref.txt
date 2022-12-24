@@ -1,0 +1,20 @@
+terraform validate - checks the configuration and syntax - but it doen't mean that always logic is correct
+terraform plan - its dry run, when we want to know about infrastructure created or destroyed or modified
+terraform apply -apply the IaaS and deploy infrastructure but you have to give apporve by providing consent 'yes'
+terraform apply --auto-approve : apply with auto-approve, it won't ask you consent
+terraform state - it shows the list of options 
+terraform state list - it shows the list of resources that was modified 
+terraform state mv <resource-name-old> <resource-name-new>  : it renames the <resource-name> with new one
+terraform state rm <resource-name> : when you dont want the resource in terrform control, you can remove that resource from only terrform state but not delete from cloud
+terraform state show <resource-name> - shows entire details of the resources that have aassociated with terraform
+terraform destroy - destroys all the resources created by terraform as per the statelist
+    - there are few ways to detroy resource(s)
+    * One way is delete the particular resource code or comment it , run 'terraform apply', it will checks with state file and destroys the resource as it is not present in the code
+    ** Other way is using 'terraform destroy -target <resource-name>' and delete the code 
+
+A scenario i faced- i was working with terrform and i run command "terraform apply" in linux machine, i am using dynamoDB state locking
+Now state is locked. suddenly power down and wifi disconned while terraform promting to enter "yes" for applying changes.
+When i connected network, i restarted server again i run "terraform apply", it shows the terraform state is locked by same linux server
+so i found that a command is used to force unlock the state of terraform,
+
+terraform force-unlock LOCK_ID - we have to provide state lock id to force unlock
