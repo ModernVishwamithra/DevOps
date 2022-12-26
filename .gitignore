@@ -1,0 +1,5 @@
+.terraform/*
+.terraform
+backend_config.json
+authentication.tf
+credentials.tf
