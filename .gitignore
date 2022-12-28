@@ -3,3 +3,4 @@
 backend_config.json
 authentication.tf
 credentials.tf
+.terraform.lock.hcl

@@ -1,0 +1,5 @@
+cidr_block_vpc       = "10.0.0.0/16"
+vpc_name             = "Ohio-VPC"
+cidr_public_subnet_1 = "10.0.10.0/24"
+cidr_public_subnet_2 = "10.0.20.0/24"
+cidr_public_subnet_3 = "10.0.30.0/24"
