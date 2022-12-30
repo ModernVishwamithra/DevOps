@@ -8,6 +8,7 @@ resource "aws_db_instance" "example-rds-1" {
   password             = local.db_creds.password
   db_subnet_group_name = aws_db_subnet_group.db-subnet-group.name
   skip_final_snapshot  = true
+  publicly_accessible = true
 }
 
 resource "aws_db_subnet_group" "db-subnet-group" {
@@ -29,4 +30,5 @@ resource "aws_db_instance" "example-rds-2" {
   password             = local.db_creds_2.password
   db_subnet_group_name = aws_db_subnet_group.db-subnet-group.name
   skip_final_snapshot = true
+  publicly_accessible = true
 }
