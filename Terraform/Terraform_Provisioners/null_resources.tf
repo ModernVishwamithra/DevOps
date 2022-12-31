@@ -6,7 +6,7 @@ resource "null_resource" "name" {
       type        = "ssh"
       user        = "ubuntu"
       private_key = file("msi-keypair.pem")
-      host        = self.public_ip
+      host        = aws_instance.public-servers.public_ip
     }
   }
 
