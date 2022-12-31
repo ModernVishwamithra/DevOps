@@ -1,0 +1,4 @@
+credentials.tf
+terraform*
+.terraform*
+msi-keypair.pem
