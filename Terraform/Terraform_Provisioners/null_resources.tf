@@ -1,5 +1,5 @@
 resource "null_resource" "name" {
-   provisioner "file" {
+  provisioner "file" {
     source      = "script.sh"
     destination = "/tmp/script.sh"
     connection {
@@ -22,5 +22,10 @@ resource "null_resource" "name" {
       host        = aws_instance.public-servers.public_ip
     }
   }
-  
+
+  provisioner "local-exec" {
+    command = <<EOH
+    echo "Public server ip is ${aws_instance.public-servers.public_ip}" >> public_server_ip && echo "Public server ip is ${aws_instance.private-servers.private_ip}" >> private_server_ip
+    EOH
+  }
 }

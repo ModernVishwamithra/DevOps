@@ -16,5 +16,5 @@ resource "aws_nat_gateway" "nat-gw" {
   tags = {
     Name = "Ohio-nat-gw"
   }
-   depends_on = [aws_internet_gateway.igw]
+  depends_on = [aws_internet_gateway.igw]
 }

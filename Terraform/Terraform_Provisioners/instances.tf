@@ -13,7 +13,7 @@ sudo apt-get update
 sudo apt-get install -y nginx
 echo "<h1>Public server 1</h1>" | sudo tee /var/www/html/index.html
   EOF
-   
+
   tags = {
     # Name = "Public-server-${count.index + 1}"
     Name = "Public-server-1"
