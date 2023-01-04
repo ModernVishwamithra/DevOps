@@ -65,8 +65,16 @@ We need to create a file either in `.json` or `.hcl` format. Here we are using .
 - "associate_public_ip_address": true,
 - "security_group_id":"{{user `security_group_id`}}",
 
-Sometimes life wont goes easy, i tried to build the packer.json file without those 3 lines, everytime i tried to build it shows "Waiting for SSH connection" and gets finished without creatng AMI. I tried multiple ways changed VPC settings, subnets, SG etc beacuse everytime instance is launching it is not assigned with public ip. After `2 hours` of debugging i found the each of above lines in different website. I was almost given up but i tried one last time.. :-)
+   Sometimes life wont goes easy, i tried to build the packer.json file without those 3 lines, everytime i tried to build it shows "Waiting for SSH connection" and gets finished without creatng AMI. I tried multiple ways changed VPC settings, subnets, SG etc beacuse everytime instance is launching it is not assigned with public ip. After `2 hours` of debugging i found the each of above lines in different website. I was almost given up but i tried   one last time.. :-)
 
 8. Run this command `.\packer.exe build --var-file packer-vars.json packer.json` which creates instance, login into it, execute the script, shutdown the instance, create AMI and terminate the instance.
 
-9. Once terminated go to aws console and check in the AMIs tab, we can find the created AMIs "owned by me".
+9. Once terminated go to aws console and check in the AMIs tab, we can find the created AMIs "owned by me". Now we have successfully created AMI and we need to use this AMI to deploy infrastructure using terraform.
+
+10. Open `main.tf` and observe the `data` source, by using which we are importing AMI id created recently. By using that AMI ID we will deploy instances. 
+
+11. Here one thing to note is we can give AMI id directy in the code or import it. The probelm with direct hard coding the AMI id is not recommended beacuse if we create another AMI using packer we need to change it manaully again. Second way is useful in the following scenario.Suppose we have created 2 AMIs and we need to take recent one to deploy infrastructure. For that we are using `most_recent = true` which takes the latest created AMIs and also we use `name_regex  = "^AMI_Image_Name"` to filter with name.
+
+12. Another scenario is suppose we have created AMI, We came to know that after deploying infrastructure, DB etc in 100 servers but we came to know that AMI is vulnerable, so we did some modifications and created 2nd AMI. Now if we try to deploy infrastructre, 100 servers will be destroyed and replaced with new(2nd) AMI. Its a data loss. Then the other way is create new 100 servers seperately without deleting the oldone's. Again this solution is not cost-effective and not a acceptable solution. So Somehow we need to do some changes/fixes to the old servers- This is called configuration management. Packer(only used for AMI automation) nor terraform(only used to deploy infra and few changes can be done by using `remote-exec`) won't support this. 
+
+Thats were configuration management tools came into the picture, Majority of the companies uses `Ansible` beacuse it is free and open-source.
