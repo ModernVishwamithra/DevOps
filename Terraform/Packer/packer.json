@@ -1,14 +1,15 @@
 {
-    "_comment": "Create Aws AMI with Ubuntu 20.04",
+    "_comment": "Create Aws AMI with Ubuntu 22.04",
     "variables": {
         "region": "",
         "source_ami": "",
         "instance_type": "",
         "vpc_id": "",
-        "subnet_id": ""
+        "subnet_id": "",
+        "security_group_id": ""
     },
-    "_comment1": "packer build -var \"aws_secret_key=foo\" packer.json",
-    "_comment2": "packer build -var-file packer-vars.json packer.json",
+    "_comment1": "packer build -var \"aws_secret_key=foo\" packer.json (template file)",
+    "_comment2": "packer build -var-file packer-vars.json packer.json (template file)",
     "builders": [
         {
             "type": "amazon-ebs",
@@ -19,6 +20,9 @@
             "ami_name": "Packer-Build-{{isotime | clean_resource_name}}",
             "vpc_id": "{{user `vpc_id`}}",
             "subnet_id": "{{user `subnet_id`}}",
+            "ssh_interface": "public_ip",
+            "associate_public_ip_address": true,
+            "security_group_id":"{{user `security_group_id`}}",
             "tags": {
                 "Name": "Packer-Build-{{isotime | clean_resource_name}}"
             }
@@ -36,7 +40,6 @@
                 "sudo usermod -aG sudo ansibleadmin",
                 "echo 'ansibleadmin ALL=(ALL) NOPASSWD: ALL' | sudo tee -a /etc/sudoers",
                 "echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYD2uQj8AkP4OSS7o/xul1/wLdollOc1jTxSDUQPZ10CMtKPx561wNdhuRGAQj3MfLQ9AGok+0JpTJ0mV0hoXdvZ3b58KtUgZY7/xdzKSEEmJiG7WJoJpOmAJd33jmhgMI8JH5IInmz15XsdVFBJvUPa2emI5HBDt8vss5vl+52ZQjf3OTYV7dD3F0SrmWdUxj9B/gjprk1eBx3CEUQwwey5bRTzH88yLutADUexDXCtQCPQY+m5ymkKPxCN4W6Y5g2Mz0fvkUlu3IPGfd+YhYpKUpEX4nf/qsCscoTA3NhdQ5xb+l5uxocjw8IkD4JovJ6pjuG8y4sJuV8xkBG/U7' | sudo tee /home/ansibleadmin/.ssh/authorized_keys",
-                "echo 'ssh-rsa  AAAAB3NzaC1yc2EAAAADAQABAAABAQCSuys4noF5cdLscZrGzzEGzHGQx6s0OepAabxTGBzAVcDXZYy+VeLUcA/ayzhia4aQ+nktz/5EfyYZRDV0/vIUTz9oGDrjAYr5HRy3RZqPHH5g1+poPQUpBzWtRbA5/5/ImoQT49LeJUp8B0zHEuZLPRgk86dgfRyPePyrWTY2EWKFR71CIxblBh5SG2DO8PZh3T8bfjUq1xEP+dmReRUCB+AkqKNsgxwg5GTwy8h4l0BYzrdjmbu9FdIQtPwNSR1Pr701O7KsW9+fLDRebSJADnMkG4DbBv/W5dHQORsEycl9fIy+eNRwrQpGVOXwmCj/NlsaJjoilTQBWqAyPN/V' | sudo tee -a /home/ansibleadmin/.ssh/authorized_keys",
                 "curl https://get.docker.com | bash"
             ]
         },
