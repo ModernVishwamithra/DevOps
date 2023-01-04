@@ -60,12 +60,12 @@ We need to create a file either in `.json` or `.hcl` format. Here we are using .
 
 7. Now run this command `.\packer.exe validate --var-file packer-vars.json packer.json` to validate the template file. If you get this message `The configuration is valid.` then syntax is correct.
 
-[Problem] 
-- "ssh_interface": "public_ip",
-- "associate_public_ip_address": true,
-- "security_group_id":"{{user `security_group_id`}}",
+> [Problem] 
+>> - "ssh_interface": "public_ip",
+>> - "associate_public_ip_address": true,
+>> - "security_group_id":"{{user `security_group_id`}}",
 
-   Sometimes life wont goes easy, i tried to build the packer.json file without those 3 lines, everytime i tried to build it shows "Waiting for SSH connection" and gets finished without creatng AMI. I tried multiple ways changed VPC settings, subnets, SG etc beacuse everytime instance is launching it is not assigned with public ip. After `2 hours` of debugging i found the each of above lines in different website. I was almost given up but i tried   one last time.. :-)
+> Sometimes life wont goes easy, i tried to build the packer.json file without those 3 lines, everytime i tried to build it shows "Waiting for SSH connection" and gets finished without creatng AMI. I tried multiple ways changed VPC settings, subnets, SG etc beacuse everytime instance is launching it is not assigned with public ip. After `2 hours` of debugging i found the each of above lines in different website. I was almost given up but i tried   one last time.. :-)
 
 8. Run this command `.\packer.exe build --var-file packer-vars.json packer.json` which creates instance, login into it, execute the script, shutdown the instance, create AMI and terminate the instance.
 
