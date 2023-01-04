@@ -17,3 +17,7 @@ We need to create a file either in .json or .hcl format. Here we are using .json
 
 ### Steps to create custom AMI using AWS (Template/code based)
 
+1. Create VPC, subnets, SG, IGW, RT manually in AWS console.
+2. create --"packer-vars.json"--,'packer.json' files and add the variables to pass to 'packer.json' file
+3. Copy the values from the console and assign them to respected variables.
+4. 
