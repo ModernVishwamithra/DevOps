@@ -30,3 +30,24 @@ Ansible controller can't able to run on windows natively and we can only use win
 9. In the 'Ansible controller' we need to use terraform to deploy instances(ansible clients) and connect them to ansible controller.
 
 10. Write the terraform code to deploy 3 instances with the custom AMI ID(which was created for packer) and push to github.
+
+11. Generate rsa_pub key using `ssh-keygen` and add that key in the github keys. Clone the repository in the `Ansible controller server` and run the terraform commands `fmr`, `validate`, `plan`, `apply`. 
+
+12. Once infrastructure is deployed, we can observe that a `invfile` is created locally in the `ansible controller` server, if we read that file we can see the public ip's of all the 3 instances.
+    ---
+    [allservers]
+    ansibleclient01 ansible_port=22 ansible_host=3.15.2.170
+    ansibleclient02 ansible_port=22 ansible_host=18.221.99.135
+    ansibleclient03 ansible_port=22 ansible_host=18.224.39.155
+    ---
+
+13. Now `Ansible controller` needs to connect to it either individually or all at time. To do that we run a command 
+**`ansible -i invfile allservers -m ping`**. Instead of connecting it throws an error for all 3 instances
+
+------
+    ansibleclient01 | UNREACHABLE! => {
+        "changed": false,
+        "msg": "Failed to connect to the host via ssh: Warning: Permanently added '3.15.2.170' (ED25519) to the list of known hosts.\r\nansibleadmin@3.15.2.170: Permission denied (publickey).",
+        "unreachable": true
+    }
+-----
