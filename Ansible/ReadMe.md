@@ -34,12 +34,12 @@ Ansible controller can't able to run on windows natively and we can only use win
 11. Generate rsa_pub key using `ssh-keygen` and add that key in the github keys. Clone the repository in the `Ansible controller server` and run the terraform commands `fmr`, `validate`, `plan`, `apply`. 
 
 12. Once infrastructure is deployed, we can observe that a `invfile` is created locally in the `ansible controller` server, if we read that file we can see the public ip's of all the 3 instances.
-    ---
+{
     [allservers]
     ansibleclient01 ansible_port=22 ansible_host=3.15.2.170
     ansibleclient02 ansible_port=22 ansible_host=18.221.99.135
     ansibleclient03 ansible_port=22 ansible_host=18.224.39.155
-    ---
+}
 
 13. Now `Ansible controller` needs to connect to it either individually or all at time. To do that we run a command 
 **`ansible -i invfile allservers -m ping`**. Instead of connecting it throws an error for all 3 instances
@@ -51,3 +51,7 @@ Ansible controller can't able to run on windows natively and we can only use win
         "unreachable": true
     }
 -----
+
+{
+    Refer this link to [Manage Mulple SSH keys](https://www.freecodecamp.org/news/how-to-manage-multiple-ssh-keys/)
+}
