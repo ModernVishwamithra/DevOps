@@ -55,3 +55,26 @@ Ansible controller can't able to run on windows natively and we can only use win
 {
     Refer this link to [Manage Mulple SSH keys](https://www.freecodecamp.org/news/how-to-manage-multiple-ssh-keys/)
 }
+
+{
+    ansible -i invfile allservers -m ping
+    }
+--To run command on all servers
+
+{
+    ansible -i invfile webservers -m ping
+    }
+--To run command on webservers only
+
+{
+    ansible -i invfile dbservers -m ping
+    }
+--To run command on dbservers only
+
+{
+    ansible -i invfile appservers -m ping
+    }
+--To run command on appservers only
+
+ansible -i invfile all -m ping`
+----To run command on all servers
