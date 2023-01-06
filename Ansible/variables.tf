@@ -35,5 +35,5 @@ variable "instance_type" {
 }
 
 variable "imagename" {
-  
+
 }
