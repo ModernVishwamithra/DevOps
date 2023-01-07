@@ -15,7 +15,7 @@
 
 ---
 - name: Play for creating adminuser
-  host: all
+  hosts: all
   become: yes
   become_user: root
   tasks:
