@@ -13,7 +13,6 @@
   - name: Start nginx service
     shell: service nginx start
 
----
 - name: Play for creating adminuser
   hosts: all
   become: yes
