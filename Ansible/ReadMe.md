@@ -52,22 +52,17 @@ Ansible controller can't able to run on windows natively and we can only use win
     }
 -----
 
-{
-    Refer this link to [Manage Mulple SSH keys](https://www.freecodecamp.org/news/how-to-manage-multiple-ssh-keys/)
+Refer this link to [Manage Mulple SSH keys](https://www.freecodecamp.org/news/how-to-manage-multiple-ssh-keys/)
 
-    git 2.10 or later, to support multiple ssh keys configure git with new key using the following command
+git 2.10 or later, to support multiple ssh keys configure git with new key using the following command
 
     --eval $(ssh-agent) 
-        -everytime server reboots this ssh-agent service is stopped, we need to restart it by running this command
+-everytime server reboots this ssh-agent service is stopped, we need to restart it by running this command
     
     --ssh-add ~/.ssh/your_custom_generated_private_key
-        -Add your custom private key to the agent
-        Now try to run git commands it has to work,otherwise run the following command
+-Add your custom private key to the agent. Now try to run git commands it has to work,otherwise run the following command
 
     --git config core.sshCommand 'ssh -i ~/.ssh/id_rsa_corp'
-
-
-}
 
 `ansible -i invfile allservers -m ping`
     --To run ping on [allservers] group
@@ -90,6 +85,7 @@ Ansible controller can't able to run on windows natively and we can only use win
 
 `ansible -i invfile ansibleclient03 -a "cat /etc/passwd"`
 --In the "" we can given shell commands to run on targeted clinet/or group of clients/or on all clients
+
 -----
 
 Ansible supports modules, which are nothing but pre-defined libraries. [Ansible modules reference](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html)
@@ -118,3 +114,21 @@ We can install packages using package module or you use shell module. The follow
 But to install softwares, running multiple commands at a time in the hosts we need to use a concept called `ansible-playbooks`. This is a file in which we use commands/keywords to execute the required scripts or functionality. This file extension may be in ``.ini`` or ``.yaml`` formats. Majority are using `.yaml` format, beacuse it is easy to read and write keywords. Also supports many features just like json.
 
 [Read this article once to get started with `YAML`](https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started)
+
+-- `ansible-playbook -i invfile nginx_playbook.yaml --syntax-check` 
+    checks the syntax
+
+-- `ansible-playbook -i invfile nginx_playbook.yaml --check` 
+    Dry run
+
+-- `ansible-playbook -i invfile nginx_playbook.yaml` 
+    Runs the playbook
+
+You can also add `tags` to the individual plays or tasks. The advantage is that we can run playbllok with specific tags only, it means only the code associated with the tag only will run.
+
+-- `ansible-playbook -i invfile nginx_playbook.yaml --list-tags`
+  It lists all the tags
+
+-- `ansible-playbook -i invfile nginx_playbook.yaml --tags install,service`
+  It runs the playbook code under which these tags `install` and `service` is associated
+
