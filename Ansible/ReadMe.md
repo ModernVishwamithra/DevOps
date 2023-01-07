@@ -56,25 +56,29 @@ Ansible controller can't able to run on windows natively and we can only use win
     Refer this link to [Manage Mulple SSH keys](https://www.freecodecamp.org/news/how-to-manage-multiple-ssh-keys/)
 }
 
-{
-    ansible -i invfile allservers -m ping
-    }
---To run command on all servers
+`ansible -i invfile allservers -m ping`
+    --To run ping on [allservers] group
 
-{
-    ansible -i invfile webservers -m ping
-    }
---To run command on webservers only
+`ansible -i invfile webservers -m ping`
+    --To run ping on [webservers] group only
 
-{
-    ansible -i invfile dbservers -m ping
-    }
---To run command on dbservers only
+`ansible -i invfile dbservers -m ping`
+    --To run ping on [dbservers] group only
 
-{
-    ansible -i invfile appservers -m ping
-    }
---To run command on appservers only
+`ansible -i invfile appservers -m ping`
+    --To run ping on [appservers] group only
 
-ansible -i invfile all -m ping`
-----To run command on all servers
+`ansible -i invfile all -m ping`
+    ----To run ping on all servers
+### Ansible adhoc commands
+
+`ansible -i invfile webserver -a uptime` (Here -a represents arguments)
+--This command gets the `uptime` of the webservers only, similary `free` gets you memory usage details
+
+`ansible -i invfile ansibleclient03 -a "cat /etc/passwd"`
+--In the "" we can given shell commands to run on targeted clinet/or group of clients/or on all clients
+
+
+But to install softwares, running multiple commands at a time in the hosts we need to use a concept called `ansible-playbooks`. This is a file in which we use commands/keywords to execute the required scripts or functionality. This file extension may be in ``.ini`` or ``.yaml`` formats. Majority are using `.yaml` format, beacuse it is easy to read and write keywords. Also supports many features just like json.
+
+[Read this article once to get started with `YAML`](https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started)
