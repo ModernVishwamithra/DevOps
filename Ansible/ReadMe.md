@@ -110,6 +110,9 @@ Similarly delete the user by running the following command
 
     --ansible -i invfile allservers -m user -a "name=testuser state=absent shell=/bin/bash" --become
 
+We can install packages using package module or you use shell module. The following command installs nginx server in all hosts.
+
+    -- ansible -i invfile allservers -m shell -a "apt install -y nginx" --become
 -----
 
 But to install softwares, running multiple commands at a time in the hosts we need to use a concept called `ansible-playbooks`. This is a file in which we use commands/keywords to execute the required scripts or functionality. This file extension may be in ``.ini`` or ``.yaml`` formats. Majority are using `.yaml` format, beacuse it is easy to read and write keywords. Also supports many features just like json.
