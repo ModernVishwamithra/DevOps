@@ -124,7 +124,7 @@ But to install softwares, running multiple commands at a time in the hosts we ne
 -- `ansible-playbook -i invfile nginx_playbook.yaml` 
     Runs the playbook
 
-You can also add `tags` to the individual plays or tasks. The advantage is that we can run playbllok with specific tags only, it means only the code associated with the tag only will run.
+You can also add `tags` to the individual plays or tasks. The advantage is that we can run playbook with specific tags only, it means only the code associated with the tag only will run.
 
 -- `ansible-playbook -i invfile nginx_playbook.yaml --list-tags`
   It lists all the tags
@@ -132,3 +132,8 @@ You can also add `tags` to the individual plays or tasks. The advantage is that 
 -- `ansible-playbook -i invfile nginx_playbook.yaml --tags install,service`
   It runs the playbook code under which these tags `install` and `service` is associated
 
+Added tags 
+ -- syntx : git tag -a <tag> <commit-hash> -m <message>
+ -- command: `git tag -a 1.0.0 5514579 -m "Added Tags to End Ansible part 1"; git push origin 1.0.0` (or  for multiple tags `git push origin --tags`)
+
+ -----
