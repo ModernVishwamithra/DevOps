@@ -6,12 +6,20 @@
   tasks:
   - name: Perform apt update
     shell: apt update
+    tags:
+    - update
 
   - name: Install nginx server
     shell: apt install -y nginx
+    tags:
+    - install
 
   - name: Start nginx service
     shell: service nginx start
+    tags:
+    - service
+  tags:
+  - nginx
 
 - name: Play for creating adminuser
   hosts: all
@@ -23,3 +31,5 @@
      name: "pavan"
      state: "present"
      shell: "/bin/bash"
+  tags:
+  - users
