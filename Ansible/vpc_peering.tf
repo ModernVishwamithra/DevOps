@@ -3,8 +3,8 @@ data "aws_vpc" "ansible_controller_vpc" {
 }
 
 resource "aws_vpc_peering_connection" "ansible_vpc_peering" {
-  peer_vpc_id   = aws_vpc.default.id
-  vpc_id        = aws_vpc.ansible_controller_vpc.id
+  peer_vpc_id   = data.aws_vpc.ansible_controller_vpc.id
+  vpc_id        = aws_vpc.default.id
   auto_accept = true
 
 #   accepter {
