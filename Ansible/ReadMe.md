@@ -1,4 +1,4 @@
-# Ansible
+#                                       Ansible Part-1
 
 [doc reference](https://docs.ansible.com/ansible-core/devel/index.html)
 
@@ -29,7 +29,7 @@ Ansible controller can't able to run on windows natively and we can only use win
 
 9. In the 'Ansible controller' we need to use terraform to deploy instances(ansible clients) and connect them to ansible controller.
 
-10. Write the terraform code to deploy 3 instances with the custom AMI ID(which was created for packer) and push to github.
+10. Write the terraform code to deploy 3 instances with the custom AMI ID(which was created for packer) and push to github. Install `git` in ansible controller server
 
 11. Generate rsa_pub key using `ssh-keygen` and add that key in the github keys. Clone the repository in the `Ansible controller server` and run the terraform commands `fmr`, `validate`, `plan`, `apply`. 
 
@@ -80,7 +80,7 @@ git 2.10 or later, to support multiple ssh keys configure git with new key using
     ----To run ping on all servers
 ### Ansible adhoc commands
 
-`ansible -i invfile webserver -a uptime` (Here -a represents arguments)
+`ansible -i invfile webservers -a uptime` (Here -a represents arguments)
 --This command gets the `uptime` of the webservers only, similary `free` gets you memory usage details
 
 `ansible -i invfile ansibleclient03 -a "cat /etc/passwd"`
@@ -137,3 +137,6 @@ Added tags
  -- command: `git tag -a 1.0.0 5514579 -m "Added Tags to End Ansible part 1"; git push origin 1.0.0` (or  for multiple tags `git push origin --tags`)
 
  -----
+ #                                      Ansible Part-2 
+
+We can connect ansible clients using private IP's using VPc peering. Import the Ansible controller VPC using data-source. 
