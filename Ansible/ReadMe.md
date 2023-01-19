@@ -56,13 +56,13 @@ Refer this link to [Manage Mulple SSH keys](https://www.freecodecamp.org/news/ho
 
 git 2.10 or later, to support multiple ssh keys configure git with new key using the following command
 
-    --eval $(ssh-agent) 
+    -- eval $(ssh-agent) 
 -everytime server reboots this ssh-agent service is stopped, we need to restart it by running this command
     
-    --ssh-add ~/.ssh/your_custom_generated_private_key
+    -- ssh-add ~/.ssh/gitrsa(your_custom_generated_private_key)
 -Add your custom private key to the agent. Now try to run git commands it has to work,otherwise run the following command
 
-    --git config core.sshCommand 'ssh -i ~/.ssh/id_rsa_corp'
+    -- git config core.sshCommand 'ssh -i ~/.ssh/id_rsa_corp'
 
 `ansible -i invfile allservers -m ping`
     --To run ping on [allservers] group
@@ -136,7 +136,20 @@ Added tags
  -- syntx : git tag -a <tag> <commit-hash> -m <message>
  -- command: `git tag -a 1.0.0 5514579 -m "Added Tags to End Ansible part 1"; git push origin 1.0.0` (or  for multiple tags `git push origin --tags`)
 
- -----
+ ----------------------------------------------------------------------
  #                                      Ansible Part-2 
+ -----------------------------------------------------------------------
+### Connecting ansible clients using private IP's.
+  ----------------------------------------------------------------------
+### Copy files from Ansible controller local folder to ansible clients
+------------------------------------------------------------------------
+### Copy files from Ansible controller remote source to ansible clients using **remote_src=true**
+------------------------------------------------------------------------
+### Working with **handlers**
+------------------------------------------------------------------------
+
+### Copy files from Ansible client local folder to ansible controller using ***fetch***
+------------------------------------------------------------------------
+
 
 We can connect ansible clients using private IP's using VPc peering. Import the Ansible controller VPC using data-source. 
