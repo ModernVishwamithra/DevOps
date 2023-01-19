@@ -10,3 +10,4 @@
       fetch:
        src: /var/www/html/index.nginx-debian.html
        dest: /tmp 
+       #This will create the folder with the machine name and copy the files
