@@ -1,0 +1,59 @@
+# --------------------NGINX Install Using remote source into client servers--------------------------------
+---
+  - name: Play for Install Nginx on WebServers
+    hosts: privateservers
+    gather_facts: no
+    become: yes
+    become_user: root
+    tasks:
+       - name: Run Apt Update
+         shell: apt update
+
+       - name: Clone Git Repo
+         shell: cd /tmp && git clone -b DevOpsB27-Ansible https://github.com/ModernVishwamithra/dockertest1.git
+         tags:
+           - clone
+
+       - name: Install Nginx Server
+         apt: >
+           name=nginx
+           state=present
+       - name: Copy the files to index destination folder.
+         copy: >
+            src=/tmp/dockertest1/index.html
+            dest=/var/www/html/index.nginx-debian.html
+            remote_src=yes
+            owner=root
+            group=root
+            mode=0644
+         tags:
+          - js
+         notify:
+          - restart nginx
+       - name: Copy the style files to  destination folder.
+         copy: >
+            src=/tmp/dockertest1/style.css
+            dest=/var/www/html/style.css
+            remote_src=yes
+            owner=root
+            group=root
+            mode=0644
+         tags:
+          - style
+         notify:
+          - restart nginx
+       - name: Copy the javascript files to  destination folder.
+         copy: >
+            src=/tmp/dockertest1/scorekeeper.js
+            dest=/var/www/html/scorekeeper.js
+            remote_src=yes
+            owner=root
+            group=root
+            mode=0644
+         tags:
+          - js
+         notify:
+          - restart nginx
+    handlers:
+      - name: restart nginx
+        command: service nginx restart
