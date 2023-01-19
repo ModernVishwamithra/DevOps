@@ -139,17 +139,69 @@ Added tags
  ----------------------------------------------------------------------
  #                                      Ansible Part-2 
  -----------------------------------------------------------------------
-### Connecting ansible clients using private IP's.
+##### Connecting ansible clients using private IP's.
+We can connect ansible clients using private IP's using VPc peering. 
+1. Create [vpc_peering.tf](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/vpc_peering.tf). Import the Ansible controller VPC using data-source and create a peering connection between the controller VPC and client VPC.
+
+2. Add the controller route in clients route table, similarly clients route in controllers route table (for this we need to import controller route table)
+
+3. Change the code in [template.tpl](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/template.tpl) & [local_files.tf](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/local_files.tf) to capture private IP's of ansible clients and create new a inventory file with updated code `privateservers`.
+
+4. Now push the code to github, start the controller server, clone the reopsitory/git pull, run the command
+  -- ansible -i invfile privateservers -m ping
   ----------------------------------------------------------------------
-### Copy files from Ansible controller local folder to ansible clients
+##### Copy files from Ansible controller local folder to ansible clients
+To run multiple commands and for more customizations we use ansible-playbooks
+1. Create [nginx_copy.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/nginx_copy.yaml) file and create code to install `nginx server` in all clients. 
+
+2. In Ansible controller server go to tmp folder (`cd /tmp/`) and clone the dockertest1 repo (`git clone -b DevOpsB27 https://github.com/ModernVishwamithra/dockertest1.git`) in that tmp folder. Change the contents of`index.html` file if required.
+
+3. Create code to copy a file from Ansible controller `dockertest1` folder(`src=/tmp/dockertest1/index.html`) to all the clients var folder (`dest=/var/www/html/index.nginx-debian.html`)
+
+4. Push the code to github, perform git pull in controller server and run the command
+ -- `ansible-playbook -i invfile nginx_copy.yaml --check-syntax`  - cheks syntax
+ -- `ansible-playbook -i invfile nginx_copy.yaml --check` - dry run
+ -- `ansible-playbook -i invfile nginx_copy.yaml -vv` - execute command with verbose(shows execution info)
+
+5. Test the clients by accessing them using public IP's, we can observe the updated `index.html` page.
 ------------------------------------------------------------------------
-### Copy files from Ansible controller remote source to ansible clients using **remote_src=true**
+##### Copy files from Ansible controller remote source to ansible clients using **remote_src=true**
+The challenge from the above file copying process is that, maually we are creating local files in ansibel controller and giving its path. Instead we can download the files from remote source and perform the copy operation dynamically using `remore_src`
+
+1. Create [nginx-remote-copy.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/nginx-remote-copy.yaml) and create the same code as [nginx_copy.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/nginx_copy.yaml) with small modifications
+
+2. The modifications are
+ - Add a new task : cloning latest repo from git hub
+ - Add command `remote_src=true`
+
+3.Git push, git pull and run the command 
+
+-- `ansible-playbook -i invfile nginx-remote-copyy.yaml --check-syntax`  - cheks syntax
+ -- `ansible-playbook -i invfile nginx-remote-copy.yaml --check` - dry run
+ -- `ansible-playbook -i invfile nginx-remote-copy.yaml -vv` - execute command with verbose(shows execution info)
+
+ 4. Test the clients by accessing them using public IP's, we can observe the updated `index.html` page.
 ------------------------------------------------------------------------
-### Working with **handlers**
+##### Working with **handlers**
+
+Evertime when we run ansible commands, some commands executes like nginx restarts evertime. It needs to be restarted onlty there is any file change. To perform it easily we use `notify` and `handlers`. 
+
+1. In the above code add `tags` to each task and at the end of the file add `handlers` with a name, the commands inside this block runs only file is changed.
+
+2. To identify the changes we use `notify` command with same as `handler's name`. This notify commands identifies any chnages occured in the server then it notifies to handler/calls the handler using its name. Then the handler block commands will be executed.
+
+3. Try to do run 
+-- `ansible-playbook -i invfile nginx-remote-copy.yaml -vv` command without and with changes in index.html file, we can see the nginx server restars only when file is changed.------------------------------------------------------------------------
+#### Copy files from Ansible client local folder to ansible controller using ***fetch***
+
+using `fetch` command in ansible we can copy the particular local file(s) of ansible client to ansible controller
+
+1. Create a simpe playbook in [fetch.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/fetch.yaml) file and use `fetch`command to copy file (`src: /var/www/html/index.nginx-debian.html`) from ansible clients to ansible controller (`dest: /tmp`). Check the /tmp folder before running thie below command
+
+2. Run the ansible command
+ -- `ansible-playbook -i invfile fetch.yaml -vv`
+
+3. We can observe that in ansible controller's `/tmp` folder is updated with newly created folders with `anslible client names` and copied information in it.
 ------------------------------------------------------------------------
 
-### Copy files from Ansible client local folder to ansible controller using ***fetch***
-------------------------------------------------------------------------
 
-
-We can connect ansible clients using private IP's using VPc peering. Import the Ansible controller VPC using data-source. 
