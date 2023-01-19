@@ -1,0 +1,12 @@
+# It copies the file from client to controller
+
+---
+ - hosts: privateservers
+   gather_facts: no
+   become: yes
+   become_user: root
+   tasks:
+    - name: Copy from client to controller
+      fetch:
+       src: /var/www/html/index.nginx-debian.html
+       dest: /tmp 
