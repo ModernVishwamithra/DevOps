@@ -1,6 +1,6 @@
 ---
 - name: Play for installing nginx server
-  hosts: webservers
+  hosts: allservers
   become: yes
   become_user: root
   tasks:
