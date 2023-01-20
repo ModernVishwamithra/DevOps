@@ -10,6 +10,8 @@
       - name: Check Docker Version
         shell: docker version | grep -w Version | head -1
         register: version
+      - name: Update iptables to legacy to solve docker running error
+        shell: sudo update-alternatives --set iptables /usr/sbin/iptables-legacy
       - debug:
           var: version
     tags:
