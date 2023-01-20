@@ -1,0 +1,33 @@
+---
+  - name: Create set of users
+    hosts: all
+    become: yes
+    become_user: root
+    gather_facts: no  #Gather facts are mentioned as NO as we have enabled facts caching. Run setup module first to cache facts.
+    tasks:
+      - name: Create Testusers 1,2,3,4,5
+        user: >
+          name={{ item }}
+          shell=/bin/bash
+          password='$1$oEe4m6pU$AAiaKEiYrrcOHW3v3oj7d.'
+        with_items:
+            - debuser1
+            - debuser2
+            - debuser3
+            - debuser4
+            - debuser5
+        when:
+          (ansible_os_family == "Debian") and (ansible_distribution_version =="22.04")
+      - name: Create Testusers 6,7,8,9,10
+        user: >
+          name={{ item }}
+          shell=/bin/bash
+          password='$1$oEe4m6pU$AAiaKEiYrrcOHW3v3oj7d.'
+        with_items:
+            - rheluser1
+            - rheluser2
+            - rheluser3
+            - rheluser4
+            - rheluser5
+        when:
+          ansible_os_family == "RedHat"
