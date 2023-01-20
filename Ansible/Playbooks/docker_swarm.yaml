@@ -26,23 +26,23 @@
       - name: Get Docker Worker Token
         shell: docker swarm join-token -q worker
         register: token
-        no_log: true
+        #no_log: true
       - set_fact:
            swarm_token: "{{ token.stdout }}"
         no_log: true
       - debug:
           var: token.stdout
-        no_log: true
+        #no_log: true
       - name: Get Docker Manager Token
         shell: docker swarm join-token -q manager
         register: managertoken
-        no_log: true
+        #no_log: true
       - set_fact:
            swarmmanager_token: "{{ managertoken.stdout }}"
-        no_log: true
+        #no_log: true
       - debug:
           var: managertoken.stdout
-        no_log: true
+        #no_log: true
       - name: Get Docker Master Private IP
         shell: curl http://169.254.169.254/latest/meta-data/local-ipv4/
         register: private_ip
@@ -76,7 +76,7 @@
     tasks:
       - debug:
           var: token
-        no_log: true
+        #no_log: true
       - debug:
           var: private_ip
       - name: Add Workers to Swarm
@@ -95,7 +95,7 @@
     tasks:
       - debug:
           var: token
-        no_log: true
+        #no_log: true
       - debug:
           var: private_ip
       - name: Add Managers to Swarm
@@ -114,7 +114,7 @@
     tasks:
       - debug:
           var: token
-        no_log: true
+        #no_log: true
       - debug:
           var: private_ip
       - name: Delete Docker Service If Exists
