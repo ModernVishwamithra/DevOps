@@ -12,7 +12,7 @@
       os_family: "{{ ansible_facts['distribution'] }}"
       os_dest: "{{ ansible_facts['distribution_version'] }}"
       ip_address: "{{ ansible_facts['eth0']['ipv4']['address'] }}"
-      friends: ['Sree','Harsha','Raju', 'Kumar']
+      friends: ['Pavan','Kedar','Madhu', 'God']
     tasks:
        - name: Run Apt Update
          shell: apt update
