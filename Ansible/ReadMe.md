@@ -59,7 +59,7 @@ git 2.10 or later, to support multiple ssh keys configure git with new key using
     -- eval $(ssh-agent) 
 -everytime server reboots this ssh-agent service is stopped, we need to restart it by running this command
     
-    -- ssh-add ~/.ssh/gitrsa(your_custom_generated_private_key)
+    -- ssh-add ~/.ssh/gitrsa (your_custom_generated_private_key)
 -Add your custom private key to the agent. Now try to run git commands it has to work,otherwise run the following command
 
     -- git config core.sshCommand 'ssh -i ~/.ssh/id_rsa_corp'
@@ -212,8 +212,17 @@ Using `fetch` command in ansible we can copy the particular local file(s) of ans
 # Ansible Part 3
 
 #### Ansible Facts and caching the facts
+
+We can gather the information about entire server, called **facts**. We can either use json file or redis server to catch the facts. 
+
+-- `ansible -i invfile privateservers -m setup`
+
+This command will gives all the information of private servers. But the problem is it will load the facts in memory. If there are more servers then disk performace will be bad.
+
  -- `ansible --version`
  -- `sudo nano /etc/ansible/ansible.cfg`
+
+To capture the facts we need to add the below lines to enable the facts caching in ansible config file (check the path in above commands).
 
 [defaults]
 gathering = smart
@@ -221,14 +230,24 @@ fact_caching = jsonfile
 fact_caching_connection = /tmp/ansible_facts_folder
 fact_caching_timeout = 86400
 
--- `ansible -i invfile privateservers -m setup`
+ Using json file we can capture facts but to improve performance, we cache the facts using REDIS( Remote Dictionary Service) server as well.
 
-disk performace will be bad if more servers. So we cache the facts using REDIS( Remote Dictionary Service)server
-
-https://dev.to/koh_sh/redis-can-make-ansible-only-a-bit-faster-39g7#:~:text=Ansible%20has%20a%20function%20called,every%20time%20you%20run%20Playbook
+[Refer this link to know about caching facts using REDIS](https://dev.to/koh_sh/redis-can-make-ansible-only-a-bit-faster-39g7#:~:text=Ansible%20has%20a%20function%20called,every%20time%20you%20run%20Playbook)
 #### Jinja Templates
 
-In [jinja_nginx.yaml]
+When we register in a platform(ex technical website), after successful registration we will get a mail with some welcome message atttached with website logo and registered user name (Ex Hi Pavan Kumar). Now think of this situation when everytime new user registers into website, they send this common welcome message to everyone with just change in registered user name. In this scenario where they have an application that provides services to many users, and want some personalization for each user on the platform. **Dynamic templates** help us to serve a unique template containing the content corresponding to the user.
+
+![Dynamic Template](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/images/jinja.png)
+
+The figure above shows that a generic template is placed, containing a variable rule on the server-side. When this template is rendered on the client-side, an appropriate value is set instead of the rule. This new value is per the context of the application, i.e., information regarding the currently logged-in user. This kind of dynamic behavior of a template is called **dynamic templating**.
+
+**Jinja** is not only a city in the Eastern Region of Uganda and a Japanese temple, but also a template engine. You commonly use **template engines** for web templates that receive dynamic content from the back end and render it as a static page in the front end.
+
+![Ansible Jinja Template example](https://www.packetcoders.io/content/images/2022/08/image1.png)
+
+But you can use Jinja without a web framework running in the background. 
+
+In [jinja_nginx.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/jinja_nginx.yaml) we are assiging few ansible facts to the variables
  -- `vars:
       custom_heading: "Welcome Ansible Jinja Template Testing"
       todays_date: "{{ ansible_facts['date_time']['date'] }}"
@@ -237,8 +256,8 @@ In [jinja_nginx.yaml]
       os_family: "{{ ansible_facts['distribution'] }}"
       os_dest: "{{ ansible_facts['distribution_version'] }}"
       ip_address: "{{ ansible_facts['eth0']['ipv4']['address'] }}"
-    
-In [index.j2]
+
+In [index.j2](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/index.j2), this is the jinja template which displays the custom values of the ansible clients. 
     -- <h1>{{ custom_heading }}</h1>
         <h1> Todays date is: {{ todays_date }} </h1>
         <h1> Server hostname is: {{ host_name }} </h1>
@@ -246,12 +265,54 @@ In [index.j2]
         <h1> Server IP Address is: {{ ip_address }} </h1>
         <h1> Server OS Flavor: {{ os_family }} </h1>
         <h1> Server OS Version is: {{ os_dest }} </h1>
-#### Loops and when condition
 
-#### Installing kubernetes cluster using ansible playbook - Register, set_fact, add_hostname
+[scorekeeper.js](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/scorekeeper.js) and [style.css](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/style.css) are customization files to jinja template
+
+We can observe that the values are different for each ansible clients, but we are using common template to get individual server facts, stored in variables(like a database) and pass those variables to this template(fetching the vaues from database)
+
+This jinja templates has some delimiters that are used in the Jinja syntax:
+
+-- {% ... %} is used for statements. We can include python 
+-- {{ ... }} is used for variables.
+-- {# ... #} is used for comments.
+-- # ... ## is used for line statements. 
+#### Loops and conditions
+
+We can also execute scripts multiple times using loops and also use conditions
+In [usercreation_with_items.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/usercreation_with_items.yaml) file we tried to create **5 users* when OS family is **Debian* and its version is **22.04*
+
+  -- {
+tasks:
+      - name: Create Testusers 1,2,3,4,5
+        user: >
+          name={{ item }}
+          shell=/bin/bash
+          password='$1$oEe4m6pU$AAiaKEiYrrcOHW3v3oj7d.'
+        with_items:
+            - debuser1
+            - debuser2
+            - debuser3
+            - debuser4
+            - debuser5
+        when:
+          (ansible_os_family == "Debian") and (ansible_distribution_version =="22.04")
+}
+
+We have used `with_items`, acting as a for loop to create 5 debian users and `when` condition to check the os family and its version. Similarly in the same file, when the os family is Redhat it creates 5 redhat users.
+#### Installing docker swarm ansible playbook - Register, set_fact, add_hostname
  
+ Create seperate template file [docker_template.tpl](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/docker_template.tpl) and [docker_localfiles.tf](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/docker_localfiles.tf) for docker swarm cluster( 1 Master, 3 workers, 2 managers)
+
+ In [main.tf](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/main.tf) create 3 more instances (total 6)
+ In [docker_swarm.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/docker_swarm.yaml)
+ we install docker on all servers. But the below issue will come, even though docker is running, but it won't able to run docker commands. Its the issue with ubuntu 22.04.
+ [issue-unable to run docker swarm init](https://github.com/docker/for-linux/issues/1406)
+
+ Solve the issue as said above or downgrage the ubuntu version and run this [docker_swarm.yaml]
+
  [register]
-
+ shows the particular value in output screen
  [set-fact]
-
+ we can not only read the facts of servers, but we can also set custom facts to the server
  [no-log]
+ to hide or unhide any particular value in output screen
