@@ -47,6 +47,7 @@
         #no_log: true
       - name: Get Docker Master Private IP
         shell: curl http://169.254.169.254/latest/meta-data/local-ipv4/
+        # This is the local host which gets the meta-data of the ec2 instance
         register: private_ip
       - set_fact:
            swarm_ip: "{{ private_ip.stdout }}"
