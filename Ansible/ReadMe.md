@@ -310,9 +310,15 @@ We have used `with_items`, acting as a for loop to create 5 debian users and `wh
 
  Solve the issue as said above or downgrage the ubuntu version and run this [docker_swarm.yaml]
 
+ Here we are using certain 
  [register]
  shows the particular value in output screen
  [set-fact]
  we can not only read the facts of servers, but we can also set custom facts to the server
  [no-log]
  to hide or unhide any particular value in output screen
+
+-----------------------------------------------------------------------------------------------------------
+# Ansible Part 4
+
+-----------------------------------------------------------------------------------------------------------
