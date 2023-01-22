@@ -1,6 +1,6 @@
 ---
   - name: Ansible Vault Testing
-    hosts: all
+    hosts: allservers
     become: yes
     become_user: root
     no_log: True
