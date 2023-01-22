@@ -382,4 +382,24 @@ Use the ansible-vault rekey command to reset the encrypted file password.
 
  -- `ansible-vault rekey aws_creds`
 
-7. 
+7. Decrypting password in a running playbook.
+
+Create a [ansible_vault.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/ansible_vault.yaml) ansible playbook and write the code to perform the following tasks.
+
+ *  create a variable `user_password` which holds the encrypted value "India@123456"(as we created earlier).
+ * Create .aws folder (`mkdir -p /root/.aws`)
+ * Replace Password Authentication To Yes in ssh config file using `ansible.builtin.lineinfile` module.
+ * Notify the handler to restart the SSH service
+ * Copy Encrypted File(as we have created `aws_creds` file and encrypted it) To /tmp folder with root permissions
+ * Copy Encrypted File(same `aws_creds` file) To .aws folder with root permissions
+ * Create an adminuser named `pavan` and assign the password `user_password`
+ * Restart the ssh service
+
+Now deploy infrastructure using terraform, run the playbook
+ 
+ -- `ansible-playbook -i invfile Playbooks/ansible_vault.yaml --check --ask-vault-pass`
+
+ -- `ansible-playbook -i invfile Playbooks/ansible_vault.yaml --ask-vault-pass`
+
+Once the playbook runs successfully, you can now login to any of the 3 servers, with user-`pavan` and password- `India@123456`
+
