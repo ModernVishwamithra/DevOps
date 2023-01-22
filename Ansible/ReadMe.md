@@ -195,7 +195,8 @@ Evertime when we run ansible commands, some commands executes like nginx restart
 
 3. Try to do run 
 
--- `ansible-playbook -i invfile nginx-remote-copy.yaml -vv` command without and with changes in index.html file, we can see the nginx server restars only when file is changed.
+  -- `ansible-playbook -i invfile nginx-remote-copy.yaml -vv` command without and with changes in index.html file, we can see the nginx server restars only when file is changed.
+  
 ------------------------------------------------------------------------
 #### Copy files from Ansible client local folder to ansible controller using ***fetch***
 
@@ -322,3 +323,63 @@ We have used `with_items`, acting as a for loop to create 5 debian users and `wh
 # Ansible Part 4
 
 -----------------------------------------------------------------------------------------------------------
+# Dealing with sensitive information - passwords, tokens, etc
+
+### **Ansible vaults**- used to store secrets in encrypted form. We need to provide valut password during encryption and decryption.
+
+1. Create encrypted a file on-demand:
+
+-- `ansible-vault create aws_creds` This will create a file which is empty and we need to provide creds. Create a aws **access_key** and **secret_key** from IAM and add the following lines to aws_creds file, which will be opened in VI editor
+
+[deafult]
+aws_access_key=xxx
+aws_secret_access_key=yyy
+
+Once entered the contents it will create and encrypt the file. To see the encrypted content use `cat aws_creds`. We can see only encrypted information. 
+
+Also we can encrypt an existing file using this command `ansible-vault encrypt aws_creds`
+
+2. Decrypt a file:
+
+Read the contents of the fle using `cat aws_creds`, echo the contents and pipe the command `ansible-vault decrypt && echo`
+
+example here - when we try to read the aws_creds we got encrypted data, then we decrypted like this by giving vault password.
+
+echo '$ANSIBLE_VAULT;1.1;AES256
+33643965616537613338373863313138326431333432326361653933616639376262656534346533
+6535313534336162633534346339316133643435393164620a613136353239663462636537396239
+35316134633065343131373765613863326230366433333436393934386361393266666266316330
+3866386431396538650a356134336331303533373031343630313433386465666464303631363961
+64626530363933633533333735396431303963663162313364656363323933313432383835333331
+64643265376237303934313436663636373766656634646539336265363232313164346332383463
+39386561343035336635336366303464323136326433613035396632656665356266653162616139
+31303631393130313433353961363532643463373961356639656261666130613461346466376139
+39383731626431316165336238653932623033663431643362353066393930316534' | ansible-vault decrypt && echo
+
+or directly decrept the file usin filename
+
+ -- `ansible-vault decrypt aws_creds`
+
+3. Encrpt a string:
+
+ -- `ansible-vault encrypt_string 'India@123456' --name 'user_password'` 
+
+ This command encrypt string named `user_password` and its value `India@123456`
+
+4. Decrypt a string:
+
+    -- `echo 'Encrypted-data' | ansible-vault decrypt && echo`
+    
+5. Editing the encrypted file:
+
+If the file is encrypted and changes are required, use the edit command.
+ 
+ -- `ansible-vault edit aws_creds`
+
+6. Reset the file password
+
+Use the ansible-vault rekey command to reset the encrypted file password.
+
+ -- `ansible-vault rekey aws_creds`
+
+7. 
