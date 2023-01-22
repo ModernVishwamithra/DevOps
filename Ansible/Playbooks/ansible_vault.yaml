@@ -40,9 +40,9 @@
           mode: '0600'
       - name: Creating adminuser
         user:
-          name: anand
+          name: pavan
           state: present
-          comment: Admin User Anand
+          comment: Admin User Pavan
           groups: root
           shell: /bin/bash
           group: root
