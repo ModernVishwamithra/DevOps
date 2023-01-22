@@ -260,12 +260,12 @@ In [jinja_nginx.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ans
 
 In [index.j2](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/index.j2), this is the jinja template which displays the custom values of the ansible clients. 
     -- <h1>{{ custom_heading }}</h1>
-        <h1> Todays date is: {{ todays_date }} </h1>
-        <h1> Server hostname is: {{ host_name }} </h1>
-        <h1> Server FQDN is: {{ fqdn_name }} </h1>
-        <h1> Server IP Address is: {{ ip_address }} </h1>
-        <h1> Server OS Flavor: {{ os_family }} </h1>
-        <h1> Server OS Version is: {{ os_dest }} </h1>
+    -- <h1> Todays date is: {{ todays_date }} </h1>
+    -- <h1> Server hostname is: {{ host_name }} </h1>
+    -- <h1> Server FQDN is: {{ fqdn_name }} </h1>
+    -- <h1> Server IP Address is: {{ ip_address }} </h1>
+    -- <h1> Server OS Flavor: {{ os_family }} </h1>
+    -- <h1> Server OS Version is: {{ os_dest }} </h1>
 
 [scorekeeper.js](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/scorekeeper.js) and [style.css](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/style.css) are customization files to jinja template
 
@@ -323,7 +323,7 @@ We have used `with_items`, acting as a for loop to create 5 debian users and `wh
 # Ansible Part 4
 
 -----------------------------------------------------------------------------------------------------------
-# Dealing with sensitive information - passwords, tokens, etc
+## Dealing with sensitive information - passwords, tokens, etc
 
 ### **Ansible vaults**- used to store secrets in encrypted form. We need to provide valut password during encryption and decryption.
 
@@ -397,9 +397,15 @@ Create a [ansible_vault.yaml](https://github.com/ModernVishwamithra/DevOps/blob/
 
 Now deploy infrastructure using terraform, run the playbook
  
- -- `ansible-playbook -i invfile Playbooks/ansible_vault.yaml --check --ask-vault-pass`
+    -- ansible-playbook -i invfile Playbooks/ansible_vault.yaml --check --ask-vault-pass
 
- -- `ansible-playbook -i invfile Playbooks/ansible_vault.yaml --ask-vault-pass`
+    -- ansible-playbook -i invfile Playbooks/ansible_vault.yaml --ask-vault-pass
 
 Once the playbook runs successfully, you can now login to any of the 3 servers, with user-`pavan` and password- `India@123456`
+---------
+# Ansible Part 5
+---------
+### Ansible roles
+
+In a ansible-playbook we have multiple plays, if more plays are present in a single playbook then it will be difficiult to read and understand it. Also one play can be reused in another playbook is also a challenge. So to address these two major concerns ansible came up with the concept of [ansible roles](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html). 
 
