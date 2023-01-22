@@ -124,7 +124,7 @@ resource "aws_security_group" "allow_all" {
 
 resource "aws_instance" "web-1" {
   ami                         = var.imagename
-  instance_type               = "t2.micro"
+  instance_type               = var.instance_type
   key_name                    = "msi-keypair"
   subnet_id                   = aws_subnet.subnet1-public.id
   vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]
@@ -139,7 +139,7 @@ resource "aws_instance" "web-1" {
 
 resource "aws_instance" "web-2" {
   ami                         = var.imagename
-  instance_type               = "t2.micro"
+  instance_type               = var.instance_type
   key_name                    = "msi-keypair"
   subnet_id                   = aws_subnet.subnet2-public.id
   vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]
@@ -154,7 +154,7 @@ resource "aws_instance" "web-2" {
 
 resource "aws_instance" "web-3" {
   ami                         = var.imagename
-  instance_type               = "t2.micro"
+  instance_type               = var.instance_type
   key_name                    = "msi-keypair"
   subnet_id                   = aws_subnet.subnet3-public.id
   vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]
@@ -169,7 +169,7 @@ resource "aws_instance" "web-3" {
 
 # resource "aws_instance" "web-4" {
 #   ami                         = var.imagename
-#   instance_type               = "t2.micro"
+#   instance_type               = var.instance_type
 #   key_name                    = "msi-keypair"
 #   subnet_id                   = aws_subnet.subnet1-public.id
 #   vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]
@@ -184,7 +184,7 @@ resource "aws_instance" "web-3" {
 
 # resource "aws_instance" "web-5" {
 #   ami                         = var.imagename
-#   instance_type               = "t2.micro"
+#   instance_type               = var.instance_type
 #   key_name                    = "msi-keypair"
 #   subnet_id                   = aws_subnet.subnet2-public.id
 #   vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]
@@ -199,7 +199,7 @@ resource "aws_instance" "web-3" {
 
 # resource "aws_instance" "web-6" {
 #   ami                         = var.imagename
-#   instance_type               = "t2.micro"
+#   instance_type               = var.instance_type
 #   key_name                    = "msi-keypair"
 #   subnet_id                   = aws_subnet.subnet3-public.id
 #   vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]

@@ -26,13 +26,7 @@ variable "azs" {
   default     = ["us-east-2a", "us-east-2b", "us-east-2c"]
 }
 variable "environment" { default = "dev" }
-variable "instance_type" {
-  default = {
-    dev  = "t2.nano"
-    test = "t2.micro"
-    prod = "t2.medium"
-  }
-}
+variable "instance_type" {}
 
 variable "imagename" {
 

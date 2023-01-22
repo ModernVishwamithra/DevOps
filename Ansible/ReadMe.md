@@ -402,6 +402,7 @@ Now deploy infrastructure using terraform, run the playbook
     -- ansible-playbook -i invfile Playbooks/ansible_vault.yaml --ask-vault-pass
 
 Once the playbook runs successfully, you can now login to any of the 3 servers, with user-`pavan` and password- `India@123456`
+
 ---------
 # Ansible Part 5
 ---------
@@ -409,3 +410,47 @@ Once the playbook runs successfully, you can now login to any of the 3 servers, 
 
 In a ansible-playbook we have multiple plays, if more plays are present in a single playbook then it will be difficiult to read and understand it. Also one play can be reused in another playbook is also a challenge. So to address these two major concerns ansible came up with the concept of [ansible roles](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html). 
 
+Roles provide a framework for fully independent, or interdependent collections of variables, tasks, files, templates, and modules.
+
+In Ansible, the role is the primary mechanism for breaking a playbook into multiple files. This simplifies writing complex playbooks, and it makes them easier to reuse. The breaking of playbook allows you to logically break the playbook into reusable components.
+
+Each role is basically limited to a particular functionality or desired output, with all the necessary steps to provide that result either within that role itself or in other roles listed as dependencies.
+
+Roles are not playbooks. Roles are small functionality which can be independently used but have to be used within playbooks. There is no way to directly execute a role. Roles have no explicit setting for which host the role will apply to.
+
+We can create our own roles also we can download existing roles using [Ansible Galaxy](https://galaxy.ansible.com/), in which you can have multiple roles developed by community.
+
+When we install ansible, by default roles folder will be created in this path `/etc/ansible`, so when we want to add, create roles we need to do in this directory.
+
+
+1. Install `nginxinstall` role 
+
+    -- `ansible-galaxy init /etc/ansible/roles/nginxinstall --offline`
+
+check the directory. We can find a structure like this
+
+    README.md  defaults  files  handlers  meta  tasks  templates  tests  vars 
+
+2. Go to `files` directory, create [scorekeeper.js] and [syle.css] using 
+    
+    -- `sudo nano scorekeeper.js` - paste the conents here
+
+    -- `sudo nano style.css` - paste the conents here
+
+3. Go to `templates` directory, create [index.j2] jinja template using
+
+    -- `sudo nano index.j2` - paste the conents here
+
+4. Go to `vars` directory, [main.yml] was already created by default. Edit that file using 
+    
+    -- `sudo nano main.yml`
+    
+    Copy the `vars` from [playbook_role.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/playbook_role.yaml) and paste the variables in the `main.yaml` file.
+
+5. Go to `tasks` directory, copy the `tasks` from [playbook_role.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/playbook_role.yaml) except handlers
+
+    -- `sudo nano main.yml`
+
+paste in the `main.yaml` file.
+
+6. Go to `handlers` directory, copy the `handler` from [playbook_role.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/playbook_role.yaml) and paste the variables in the `main.yaml` file.
