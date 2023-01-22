@@ -3,7 +3,7 @@
     hosts: allservers
     become: yes
     become_user: root
-    #no_log: True
+    no_log: True
     vars:
      user_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
