@@ -1,0 +1,84 @@
+#ansible-galaxy collection install nginxinc.nginx_core
+#ansible-galaxy collection install community.mysql
+---
+  - name: Play for Install MySQL on DBServers
+    hosts: private
+    gather_facts: yes #yes or no
+    become: yes
+    become_user: root
+    vars:
+      mysql_pass: 'India@123456'
+    roles:
+     - { role: geerlingguy.mysql } #Role not part of Collection
+     - nginxinc.nginx_core.nginx #Role Part of nginx_core Collection
+    collections:
+      - community.mysql
+      - nginxinc.nginx_core
+    tasks:
+      # - name: Change the authentication plugin of MySQL root user to mysql_native_password
+      #   shell: mysql -u root -e 'UPDATE mysql.user SET plugin="mysql_native_password" WHERE user="root" AND host="localhost"'
+      #   tags:
+      #   - rootuser
+      # - name: Flush Privileges
+      #   shell: mysql -u root -e 'FLUSH PRIVILEGES'
+      #   tags:
+      #   - rootuser
+      # #Unable to login after the password is set. 
+      # #https://devanswers.co/how-to-reset-mysql-root-password-ubuntu/ 
+      # - name: Set MySQL root password
+      #   community.mysql.mysql_user:
+      #     login_host: 'localhost'
+      #     login_user: 'root'
+      #     login_password: 'your_password_here'
+      #     name: 'adminuser2'
+      #     password: '{{ mysql_pass }}'
+      #     state: present
+      #   tags:
+      #   - rootuser
+      - name: Create a new database with name myflixdb, megastar, superstar
+        community.mysql.mysql_db: #Module Part of mysql Collection
+         name: 
+          - myflixdb
+          - megastar
+          - superstar
+         state: present
+         login_user: root
+         login_password: "{{ mysql_root_password }}"
+      - name: add sample data to database 
+        copy: src=dump.sql dest=/tmp/dump.sql
+        tags:
+        - mysql
+      - name: Restore database myflixdb ignoring errors
+        community.mysql.mysql_db:
+          name: myflixdb
+          state: import
+          target: /tmp/dump.sql
+          force: yes
+        tags:
+        - import
+      - name: check if Databases
+        shell: mysql -e 'SHOW DATABASES; USE myflixdb; SHOW tables; SELECT * FROM movies;'
+        tags:
+        - check
+      - name: Create database user using hashed password with all database privileges
+        community.mysql.mysql_user:
+          name: adminsree
+          password: '*F65D6CBAF7F3307DDCC700FC03CB1E025036AF10'
+          encrypted: yes
+          priv: '*.*:ALL'
+          state: present
+        tags:
+        - user
+      - name: Create database user using hashed password with all selected DB
+        community.mysql.mysql_user:
+          state: present
+          name: bob
+          password: '*F65D6CBAF7F3307DDCC700FC03CB1E025036AF10'
+          encrypted: yes
+          priv:
+            'myflixdb.*': 'ALL,GRANT'
+            'megastar.*': 'ALL,GRANT'
+        tags:
+        - user
+
+
