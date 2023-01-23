@@ -3,5 +3,7 @@
   hosts: privateservers
   become: yes
   become_user: root
+  vars:
+   custom_heading: "Testing Ansible vars precedence"
   roles:
   - /etc/ansible/roles/nginxinstall
