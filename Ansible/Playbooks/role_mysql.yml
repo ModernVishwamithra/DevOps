@@ -22,6 +22,7 @@
   - name: Insert sample data into database
     mysql_db: >
      name=myflixdb
-     state=import target=/tmp/dump.sql
+     state=import 
+     target=/tmp/dump.sql
     tags:
      - mysql
