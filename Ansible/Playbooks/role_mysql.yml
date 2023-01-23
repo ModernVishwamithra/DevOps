@@ -5,3 +5,17 @@
   become_user: root
   roles:
    - { role: geerlingguy.mysql }
+  tasks:
+  - name: Create a new databse
+    mysql_db: >
+     name=myflixdb
+     state=present
+     login_user=root
+  - name: Add sample data to database
+    copy: >
+     src=dump.sql
+     dest=/tmp/dump.sql
+  - name: Insert sample data into database
+    mysql_db: >
+     name=myflixdb
+     state=import target=/tmp/dump.sql
