@@ -490,7 +490,9 @@ It was installed in this directory, `/home/ansibleadmin/.ansible/roles/geerlingg
 13. Configure the mysql server in all the hosts,
     
     `ansible-playbook -i invfile Playbooks/role_mysql.yml --syntax-check`
+
     `ansible-playbook -i invfile Playbooks/role_mysql.yml --check`
+
     `ansible-playbook -i invfile Playbooks/role_mysql.yml -vv`
 
 14. Once successfully installed, log in into any one of the instances, and check the mysql is successfully installed
@@ -502,4 +504,45 @@ It was installed in this directory, `/home/ansibleadmin/.ansible/roles/geerlingg
     -- select * from moves; : Displays all the contents of `movies table`
 
 ---------
+# Ansible Part 6
+--------
+## Ansible Collections
+-------
+* Ansible was developed by [RedHat] organization. Ansible is available in two types. One is open-source ansible automation, another is RedHat maintained Ansible tower. People obviously look for free and open-source content. But if that conent is not updated regularly, many people find alternatives. Hence Ansible has a community members from all over the world who can contribute their work to ansible open-source tool.
+
+* But the latest incorporated changes needs to be accepted by all community members for adding them to next release. Till that time thier work won't be available. To solve this challenge, ansible created a central distribution server called [Ansible Galaxy](https://galaxy.ansible.com/).
+
+* In this server, community members share and distribute their work and other people will go though it and use their work. But sharing of the work to be in a common format, called [Collections], before V2.9 it tis called as [roles].
+
+* So Ansible collections are nothing but a distribution format of ansible content like Plug-ins, roles, modules, playbooks. We can download our required collections(like libraries) from galaxy server and use it further. These collections also having proper documentation on how to use them.
+
+* In this example, we install two collections from galaxy by running these two commands
+
+```bash
+    ansible-galaxy collection install nginxinc.nginx_core
+    ansible-galaxy collection install community.mysql
+```
+* Create a playbook [collection_role_mysql.yml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/collection_role_mysql.yml) and add the following
  
+ - Add roles 
+    - geerlingguy.mysql : which we already installed in previous ansible part
+    - nginxinc.nginx_core.nginx : This is a role from the downloaded nginx collection
+ 
+ - Include the collections
+    - community.mysql
+    - nginxinc.nginx_core
+ - Create tasks
+    - Create new databases with name myflixdb, megastar, superstar
+    - Copy sample sql data to tmp folder
+    - Imporing database myflixdb ignoring errors
+    - Show the movies table data
+    - Create user with encryped password(can be genrated from online or libraries available) access to all databases
+    - Create user with encrypted password for specific databases.
+
+ * Run the playbook and check the movies data is visble 
+
+ ```bash
+ ansible-playbook -i invfile Playbooks/collection_role_mysql.yml --syntax-check
+ ansible-playbook -i invfile Playbooks/collection_role_mysql.yml --check
+ ansible-playbook -i invfile Playbooks/collection_role_mysql.yml -vv
+ ```
