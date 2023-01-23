@@ -2,7 +2,7 @@
 #ansible-galaxy collection install community.mysql
 ---
   - name: Play for Install MySQL on DBServers
-    hosts: private
+    hosts: privateservers
     gather_facts: yes #yes or no
     become: yes
     become_user: root
