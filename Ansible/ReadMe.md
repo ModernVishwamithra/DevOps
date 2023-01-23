@@ -453,4 +453,53 @@ check the directory. We can find a structure like this
 
 paste in the `main.yaml` file.
 
-6. Go to `handlers` directory, copy the `handler` from [playbook_role.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/playbook_role.yaml) and paste the variables in the `main.yaml` file.
+6. Go to `handlers` directory, copy the `handlers` from [playbook_role.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/playbook_role.yaml) and paste the variables in the `main.yaml` file.
+
+7. Create [role_nginx.yml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/role_nginx.yml) and add the hosts , root permissions, Role path that we have installed, modified.
+
+8. Deploy the infrastructure using terraform and run the ansible play-book
+
+    -- ansible-playbook -i invfile Playbooks/role_nginx.yml --syntax-check
+    -- ansible-playbook -i invfile Playbooks/role_nginx.yml --check
+    -- ansible-playbook -i invfile Playbooks/role_nginx.yml -vv
+
+9. The above commands checks the syntax, dry run and finally apply the configuration to all the hosts. Ansible automatically checks the directory, roles in it and apply it to the playbook. Now go to aws console and try to access any server's public ip, you can see the ngninx with jinja template associated with dynamic varibales server data. 
+
+10. Try to add a variable `custom_heading` in [role_nginx.yml] file and apply. We wont be able to see the updated heading, beacuse of the variable precedence. Refer the document [variable precedence](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html) for more carity. 
+
+So we want to change the variable outside of the ansible role, we use  `--extra-vars`(make sure the value of the varibale should be in '' single quotes). 
+
+    ansible-playbook -i invfile Playbook/role-nginx.yml \
+        --extra-vars "custom_heading='Testing VAR Precedence'" -e "ip_address='10.1.1.100'" 
+
+The above command just replaces the varibales value i.e `custom_heading` and `ip_addess` as per the given values in all the hosts.
+
+11. Install `mysql` role downloaded from ansible galaxy
+
+    `ansible-galaxy install  --roles-path=/etc/ansible/roles/mysql geerlingguy.mysql`
+
+It was installed in this directory, `/home/ansibleadmin/.ansible/roles/geerlingguy.mysql/`
+
+12. Create sample sql data [dump.sql](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/dump.sql) and a playbook [role_mysql.yml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/role_mysql.yml) to perform the following operations:
+
+    * Add mysql role
+    * Create a new database
+    * Copy the sample data to tmp folder
+    * Insert/Import sample data into database
+
+13. Configure the mysql server in all the hosts,
+    
+    `ansible-playbook -i invfile Playbooks/role_mysql.yml --syntax-check`
+    `ansible-playbook -i invfile Playbooks/role_mysql.yml --check`
+    `ansible-playbook -i invfile Playbooks/role_mysql.yml -vv`
+
+14. Once successfully installed, log in into any one of the instances, and check the mysql is successfully installed
+
+    -- mysql : Gives you the version if successfully installed
+    -- show databases; : It shows the default/created databases, in this we can see `myflixdb` data base
+    -- use myflixdb; : Selects the database
+    -- show tables; : Displays the tables present in the db
+    -- select * from moves; : Displays all the contents of `movies table`
+
+---------
+ 
