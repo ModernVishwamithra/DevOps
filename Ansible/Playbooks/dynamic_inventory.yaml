@@ -1,6 +1,6 @@
 ---
 - name: Installing nginx using ansible role
-  hosts: tags_Owner_Pavan
+  hosts: tag_Owner_Pavan
   become: yes
   become_user: root
   vars:
