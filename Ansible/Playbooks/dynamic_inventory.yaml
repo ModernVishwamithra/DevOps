@@ -1,0 +1,41 @@
+---
+- name: Installing nginx using ansible role
+  hosts: tags_Owner_Pavan
+  become: yes
+  become_user: root
+  vars:
+   custom_heading: "Testing Ansible vars precedence"
+  roles:
+  - /etc/ansible/roles/nginxinstall
+  tags:
+   - nginx
+
+- name: Installing mysql using ansible role
+  hosts: tag_Name_Server_3
+  become: yes
+  become_user: root
+  roles:
+   - { role: geerlingguy.mysql }
+  tags:
+   -mysqlinstall
+  tasks:
+  - name: Create a new database
+    mysql_db: >
+     name=myflixdb
+     state=present
+     login_user=root
+    tags:
+     - create  
+  - name: Copy the sample data to tmp folder
+    copy: >
+     src=dump.sql
+     dest=/tmp/dump.sql
+    tags:
+     - copy
+  - name: Insert/Import sample data into database
+    mysql_db: >
+     name=myflixdb
+     state=import 
+     target=/tmp/dump.sql
+    tags:
+     - insert
