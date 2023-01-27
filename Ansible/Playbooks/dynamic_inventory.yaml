@@ -41,7 +41,7 @@
   - nginx
 
 - name: Install MySQL Using Ansible Role
-  hosts: tag_Name_Server3
+  hosts: tag_Name_Server_3
   become: yes
   become_user: root
   roles:
