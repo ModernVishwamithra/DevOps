@@ -546,3 +546,77 @@ It was installed in this directory, `/home/ansibleadmin/.ansible/roles/geerlingg
  ansible-playbook -i invfile Playbooks/collection_role_mysql.yml --check
  ansible-playbook -i invfile Playbooks/collection_role_mysql.yml -vv
  ```
+
+ # Ansible Part 7
+--------
+## Ansible Dynamic inventory
+
+It is easy with ansible inventory file to configure different servers, but it will be challenging when IP addresses frequently changes, or the instances creating dynamically(Auto scaling) etc. To tackle this challenge, a concept called *Dynamic Inventory* built as a ansible plugin. In this process our ansible controller connects to ec2 through `boto3` client using API, in response it gets the all the information about ec2 instances associated with the [tags].
+
+[refer this artile for better understanding](https://devopscube.com/setup-ansible-aws-dynamic-inventory/)
+![Dynamic Inventory](https://devopscube.com/wp-content/uploads/2021/07/ansiblee-inventory.png)
+
+1. Install python, pip and boto3 packages
+
+```bash
+sudo apt-get install python3 -y
+sudo apt-get install python3-pip -y
+sudo pip3 install boto3
+```
+2. Create an inventory directory under /opt and cd into the directory.
+
+```bash
+sudo mkdir -p /opt/ansible/inventory
+cd /opt/ansible/inventory
+```
+3. Create a file named aws_ec2.yaml in the inventory directory.
+```bash
+sudo vi aws_ec2.yaml or sudo nano aws_ec2.yaml
+```
+and add the following lines
+
+```yaml
+---
+plugin: aws_ec2
+aws_access_key: <YOUR-AWS-ACCESS-KEY-HERE>
+aws_secret_key: <YOUR-AWS-SECRET-KEY-HERE>
+keyed_groups:
+  - key: tags
+    prefix: tag
+```
+If you are using role in the ansible controller to access aws then no need to give access & security keys other we need to provide.
+
+4. Open `/etc/ansible/ansible.cfg` file, Find the [inventory] section and add the following line to enable the ec2 plugin.
+
+```script
+enable_plugins = aws_ec2
+```
+
+5. Now let’s test the dynamic inventory configuration by listing the ec2 instances.
+
+```bash
+ansible-inventory -i /opt/ansible/inventory/aws_ec2.yaml --list | jq
+```
+
+This will fetch you all the servers information in json format filtered with the [keyed-groups] which was given in aws_ec2.yaml file [for reference check this file](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/aws_ec2_plugin.yaml).
+
+6. Create [dynamic_inventory.yaml](https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/dynamic_inventory.yaml) and add two roles one is to install nginx and other is mysql. Add play level tags.
+
+7. Using tags We can target the servers to which roles to be installed. First check syntax, perform dry run and run the playbook
+
+```bash
+ansible-playbook -i /opt/ansible/inventory/aws_ec2.yaml Playbooks/dynamic_inventory.yaml --syntax-check
+ansible-playbook -i /opt/ansible/inventory/aws_ec2.yaml Playbooks/dynamic_inventory.yaml --check --tags nginx
+ansible-playbook -i /opt/ansible/inventory/aws_ec2.yaml Playbooks/dynamic_inventory.yaml --tags nginx
+ansible-playbook -i /opt/ansible/inventory/aws_ec2.yaml Playbooks/dynamic_inventory.yaml --tags mysqlinstall
+ansible-playbook -i /opt/ansible/inventory/aws_ec2.yaml Playbooks/dynamic_inventory.yaml --tags nginx,mysqlinstall
+```
+The 3rd command will install only nginx, 4th command installs only mysql and both nginx,mysql from [https://github.com/ModernVishwamithra/DevOps/blob/main/Ansible/Playbooks/dynamic_inventory.yaml] playbook.
+
+
+
+8. `serial=1` in the playbook means, configure only one server at a time(serial). We also have `pre-tasks` and `post-tasks` where the tasks which we want to excute before or after the main tasks like plugin updation or something like that. Also we need to check in the sandbox environment that one pre-tasks are taking how much time, give timeout/execution time .
+
+`delegate_to` is used to run the command in local ansible controller(its like local exec in terraform)
+
+--------------
