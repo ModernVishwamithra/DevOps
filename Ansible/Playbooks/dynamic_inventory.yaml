@@ -3,6 +3,8 @@
   hosts: tag_Owner_Pavan
   become: yes
   become_user: root
+  serial: 1
+  verbosity: 1 #increase the dubugging level
   vars:
    custom_heading: "Testing Ansible vars precedence"
   roles:
