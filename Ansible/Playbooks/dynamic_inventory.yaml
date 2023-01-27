@@ -1,42 +1,70 @@
 ---
-- name: Installing nginx using ansible role
+- name: Install Nginx Using Ansible Role
   hosts: tag_Owner_Pavan
   become: yes
   become_user: root
-  serial: 1
-  vars:
-   custom_heading: "Testing Ansible vars precedence"
-  roles:
-  - /etc/ansible/roles/nginxinstall
+  #serial: 1
+  pre_tasks:
+    - name: Disable web server in load balancer
+      shell: apt install -y net-tools jq unzip
+    - name: Uninstall nginx if it exists
+      shell: sudo apt-get --purge remove nginx -y
+      async: 60
+      poll: 5
   tags:
-   - nginx
+  - pre
+  post_tasks:
+    - name: Check the Website
+      shell: hostname && curl http://{{ ip_address }}
+      register: result
+      delegate_to: 127.0.0.1
+    - name: Print return information from the previous task
+      ansible.builtin.debug:
+        var: result
+        verbosity: 2
+  tags:
+  - post
+  vars:
+    custom_heading: "Lets Test Some VARS"
+    ip_address: "{{ ansible_facts['eth0']['ipv4']['address'] }}"
+  roles:
+  - /etc/ansible/roles/nginxinstall  
+  tasks:
+  - name: Get uptime information
+    ansible.builtin.shell: /usr/bin/uptime
+    register: result
+  - name: Print return information from the previous task
+    ansible.builtin.debug:
+      var: result
+      verbosity: 2
+  tags:
+  - nginx
 
-- name: Installing mysql using ansible role
-  hosts: tag_Name_Server_3
+- name: Install MySQL Using Ansible Role
+  hosts: tag_Name_Server3
   become: yes
   become_user: root
   roles:
-   - { role: geerlingguy.mysql }
+  - { role: geerlingguy.mysql }
   tags:
-   -mysqlinstall
+  - mysqlinstall
   tasks:
-  - name: Create a new database
+  - name: create a new database 
     mysql_db: >
-     name=myflixdb
-     state=present
-     login_user=root
+      name=myflixdb 
+      state=present 
+      login_user=root
     tags:
-     - create  
-  - name: Copy the sample data to tmp folder
-    copy: >
-     src=dump.sql
-     dest=/tmp/dump.sql
+    - mysql
+  - name: add sample data to database 
+    copy: src=dump.sql dest=/tmp/dump.sql
     tags:
-     - copy
-  - name: Insert/Import sample data into database
-    mysql_db: >
-     name=myflixdb
-     state=import 
-     target=/tmp/dump.sql
+    - mysql
+  - name: insert sample data into database
+    mysql_db: name=myflixdb state=import target=/tmp/dump.sql
     tags:
-     - insert
+    - mysql
+  - name: Add records to MySQL
+    mysql_db: name=myflixdb state=import target=/tmp/dump.sql
+    tags:
+    - mysql
