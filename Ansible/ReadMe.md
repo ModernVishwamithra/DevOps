@@ -620,3 +620,18 @@ The 3rd command will install only nginx, 4th command installs only mysql and bot
 `delegate_to` is used to run the command in local ansible controller(its like local exec in terraform)
 
 --------------
+# Ansible Part 8
+
+## Ansible Tower
+
+It is very easy sometimes when you run ansible without command line interface but GUI. RedHat acquired ansible and made two different versions one is open source and license. Similarly they made GUI interface previously called as AnsibleX now it is Ansible Tower.
+
+You can install AnsibleX from AMI market place and use its public ip to access the dashboard. 
+
+Watch the videos related to it
+
+- [https://www.youtube.com/watch?v=wZ_mh4-4HPY&list=PLnrmLjoInKWj4a7xu84_Z0_TiVlDCd0wq]
+
+- [https://www.youtube.com/watch?v=ToXoDdUOzj8&list=PLnrmLjoInKWj4a7xu84_Z0_TiVlDCd0wq&index=2]
+
+- [https://www.youtube.com/watch?v=jq_yzGuKPfA&list=PLnrmLjoInKWj4a7xu84_Z0_TiVlDCd0wq&index=8]
