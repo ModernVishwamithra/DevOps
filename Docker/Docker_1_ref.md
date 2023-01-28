@@ -158,4 +158,6 @@ What is this bridge network purpose(host and null won't be used much at this poi
 
 ![Docker Port Forwarding](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/docker-port-forwarding.png)
 
-In the above image, it is clearly represents that `docker bridge network` connects as a brige between `eth0` and `docker containers`. When clients wants to connects to these containers through internet, traffic has to pass through `eth0 --> bridge NW --> container image`. Here the challenge is if you observer container 1 and 3 has port numbers as it is having port nmubers same it leads to conflict that to which container has to connect. To address this challenge we have `port forwarding` concept, in which we assign seperate port numbers for each of the containers (8000,8080,9000 like that) then it will be easy for budge nw to route the traffic.
+In the above image, it is clearly represents that `docker bridge network` connects as a brige between `eth0` and `docker containers`. When clients wants to connects to these containers through internet, traffic has to pass through `eth0 --> bridge NW --> container image`. Here the challenge is if you observer container 1 and 3 has port numbers as it is having port nmubers same it leads to conflict that to which container has to connect. To address this challenge we have `port forwarding` concept, in which we assign seperate port numbers for each of the containers (8000,8080,9000 like that) then it will be easy for brige network to route the traffic.
+
+------------------
