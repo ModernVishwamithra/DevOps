@@ -15,8 +15,8 @@ ADD error.html /var/www/html/error.html
 ADD https://releases.hashicorp.com/terraform/${VERSION}/terraform_${VERSION}_linux_amd64.zip /usr/local/bin/terraform.zip
 RUN cd /usr/local/bin/ && unzip terraform.zip && rm -f *.zip && terraform version
 EXPOSE 80
+#You cant override the commands using ENRTYPOINT 
+ENTRYPOINT [ "ping", "-c 3" ]
 #You can override the commands using CMD
-CMD [ "ping", "-c 3" ]
-#You cant override the commands using ENRTYPOINT
-ENTRYPOINT ["www.google.com"] 
+CMD ["www.facebook.com"] 
    
