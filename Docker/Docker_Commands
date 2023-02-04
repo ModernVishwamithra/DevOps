@@ -1,0 +1,36 @@
+# Docker Commands
+
+* docker build -t `tag` .(current folder)
+    - docker build -t pavan/nginx:v1 .
+* docker build -t `image-tagname:version` -f `docker-file` .(current folder) - giving docker-file directly to build
+    - docker build -t pavan/nginx:v2 -f Dockerfile .
+* docker images - shows the list of images
+* docker rmi `image-id` - deletes the created image
+    - docker rmi 5ba920a4e0cd 
+* docker image inspect `image-id` | jq - shows the sub layers of the image in json format
+    - docker image inspect e40cf56b4be3 | jq 
+* docker run -it `image-tagname:version` - it let you go into container, `-it` means interactive termainal
+    - docker run -it pavan/nginx:v2
+    - exit - it logs you out of container
+* docker run -d `image-tagname:version` - it creates container and exits automatically, `-d` means detached
+    - docker run -d pavan/nginx:v2
+
+* docker ps - It shows all the running containers
+* docker ps -a - It shows all the exited/non-running containers
+* docker ps -aq - returns the id's of exited images
+* docker rm `image-ids with space` - removes the images 
+    - docker rm 9a000e4ce3c6 059d315bae77
+* docker rm $(docker ps -aq) - removes all the images (if containers are running, we can't able to removes unless we stop them first)
+* doker stop `cointainer-id` - stops the running container
+    - docker stop 00c1a06066bc
+    - docker stop $(docker ps -aq) - stops all the running containers
+* 
+# Docker Instructions
+`FROM` - which base image need to be used to build docker container
+`LABEL` - Comments or Tags (we can have any number of lables in a file)
+`ARG` - Arguments or variables
+`ENV` - Environment variables
+`RUN` - command to execute shell script
+`COPY` - copy the data from one location to another location
+`ADD` - It will perform same operations as "Copy" but this command also able to download file from internet.
+`EXPOSE` - You are telling the users to which port the application is connected
