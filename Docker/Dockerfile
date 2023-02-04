@@ -6,8 +6,10 @@ ARG VERSION='1.3.7'
 #ENV AWS_ACCESS_KEY="ASDSADADADASDAS"
 #ENV AWS_SECRET_ACCESS_KEY='ADSDASDASSDDASDSD'
 RUN apt update
-RUN apt install -y nginx jq unzip curl wget awscli iputils-ping
-RUN apt -y install net-tools
+RUN apt install -y nginx jq unzip curl wget 
+RUN apt install -y iputils-ping
+RUN apt install -y net-tools
+RUN apt install -y awscli
 COPY index.html /var/www/html/index.nginx-debian.html
 COPY style.css /var/www/html/style.css
 COPY scorekeeper.js /var/www/html/scorekeeper.js
