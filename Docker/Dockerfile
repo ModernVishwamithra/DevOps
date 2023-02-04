@@ -7,7 +7,7 @@ ARG VERSION='1.3.7'
 #ENV AWS_SECRET_ACCESS_KEY='ADSDASDASSDDASDSD'
 RUN apt update
 RUN apt install -y nginx jq unzip curl wget
-RUN sudo apt install -y awscli
+RUN apt install -y awscli
 COPY index.html /var/www/html/index.nginx-debian.html
 COPY style.css /var/www/html/style.css
 COPY scorekeeper.js /var/www/html/scorekeeper.js
