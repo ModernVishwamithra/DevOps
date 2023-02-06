@@ -18,5 +18,3 @@ def hello_geek3():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-# #THIS IS A BUGG
