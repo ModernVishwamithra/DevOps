@@ -47,4 +47,6 @@ It will let you in as `user` and default directory as `app`. Try to access sudo,
 
 ```bash
 docker build -t multistage:v1 -f Dockerfile.Multi .
+docker run --rm --name multi -p 5000:5000 multistage:v1
 ```
+It shows the error at line 22.
