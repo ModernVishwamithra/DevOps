@@ -14,7 +14,6 @@
     - exit - it logs you out of container
 * docker run -d `image-tagname:version` - it creates container and exits automatically, `-d` means detached
     - docker run -d pavan/nginx:v2
-
 * docker ps - It shows all the running containers
 * docker ps -a - It shows all the exited/non-running containers
 * docker ps -aq - returns the id's of exited images
@@ -23,8 +22,11 @@
 * docker rm $(docker ps -aq) - removes all the images (if containers are running, we can't able to removes unless we stop them first)
 * doker stop `cointainer-id` - stops the running container
     - docker stop 00c1a06066bc
-    - docker stop $(docker ps -aq) - stops all the running containers
-* 
+    - docker stop $(docker ps -aq) - stops all the running containers, memory is released
+* docker start `cointainer-id` - starts the running container  
+* docker pause `cointainer-id` - pause the running container, some part of the memory holds  
+* docker unpause `cointainer-id` - unpause the running container  
+* docker kill `cointainer-id` - kill the running container  
 # Docker Instructions
 `FROM` - which base image need to be used to build docker container
 `LABEL` - Comments or Tags (we can have any number of lables in a file)
