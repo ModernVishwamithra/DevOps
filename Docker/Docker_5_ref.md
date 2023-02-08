@@ -168,7 +168,7 @@ we can directly give in the docker run command
 ```bash
 docker run --rm --name mysql01 -v mysql_data:/var/lib/mysql --network mysql_nw -e MYSQL_ROOT_PASSWORD=India@123 -d mysql:latest
 ```
-We can connect all the containers and successfully communicate with them also in adminer. Login with name `mysql01` instead of ip.
+We can connect all the containers and successfully communicate with them. Also in adminer we can Login with name `mysql01` instead of ip.
 
 * If you want to delete unused containers/ voulumes
 ```bash
@@ -176,6 +176,75 @@ docker network prune
 docker volume prune
 ```
 It will promt y/n to remove them
+
 -----
 ### Docker bindmounts
 Refer this [Volumes and Bindmounts](https://docs.docker.com/storage/volumes/)
+
+* It is officailly recommended that for data persistance `Docker volumes` are having more advantages than `Bindmounts`. The drawback of bindmounts is it can able to expose underlying sensitive information or all the contents of container.
+
+* In root login give accesss to ubuntu
+
+```bash 
+usermod -a -G docker ubuntu
+usermod -a -G root ubuntu
+```
+
+* Lets create a simple passwordfile
+
+```bash 
+echo 'my super secret password' > passwordfile
+cat passwordfile
+```
+* We can see the passwordfile consists of data, now exit form root and try to access password file using ubuntu 
+```bash
+ubuntu@: cat passwordfile
+```
+it shows permisiion denied.
+
+* Now try `bindmount`, means mouting `root`(local folder) to some folder(desired folder/volume)
+```bash
+docker run --rm -d --name utils -v /root:/ihackedit sreeharshav/utils:latest
+docker exec -it utils /bin/bash
+cat /ihackedit/passwordfile
+```
+Voila! It shows `my super secret password`. Earlier when we try to access as `ubuntu` it shows permisiion denied, but now after bindmount it gave access to every root folder.
+
+* Thats why it is recommended that we should not keep any sensitive information in the docker hosts(containers). Also when we want to check the dockerfie for any errors/warning(linting)
+[Docker lint](https://hadolint.github.io/hadolint/)
+
+* **Using Bind Mount**: When we want to run docker inside a container, it connects to docker host socket. By using bindmount we can mount the local `/var/run/docker.sock` to destination container folder(`/var/run/docker.sock`) without need of network(none/null network)
+
+```bash
+docker run --rm -dit --name utils  -v /var/run/docker.sock:/var/run/docker.sock sreeharshav/utils
+docker exec -it utils /bin/bash
+ifconfig
+```
+You can see ip address of container, because it is using default bridge network
+
+* **Using Bind Mount With None Network**: 
+```bash
+docker run --rm -d --name utils01 -v /var/run/docker.sock:/var/run/docker.sock --network none sreeharshav/utils:latest
+docker exec -it utils /bin/bash
+ifconfig
+```
+You cant see any ip-address except local address 127.0.0.0. Which means that no interface between docker host machine and container.
+
+* **Using Bind Mount With Host Network**:
+```bash
+docker run --rm -d --name adminerhost  --network host adminer:latest
+docker run --rm -d --name nginx001host  --network host sreeharshav/rollingupdate:v5
+```
+You can open `ec2-3-22-68-5.us-east-2.compute.amazonaws.com`, you can get webpage. Here it is important to note that we have not given `-p or publish 80:80` port forwarding, still we can access. That is `host` network, which allows only docker host can access the container.
+
+* **Using both Docker volumes and bindmount**:
+```bash
+docker volume create portainer_data
+
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer \
+	--restart=always \
+	-v /var/run/docker.sock:/var/run/docker.sock \
+	-v portainer_data:/data \
+	portainer/portainer-ce:2.11.1
+```
+-------
