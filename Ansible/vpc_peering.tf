@@ -28,7 +28,7 @@ resource "aws_route" "route_client_to_controller" {
 
 data "aws_route_table" "route_table_controller" {
   # Either you can import subnet directely and add it here or directly copy the id here
-  subnet_id = "subnet-0b746f61a4e51f567"
+  subnet_id = "subnet-098eb740761fc9d39"
 }
 
 resource "aws_route" "route_controller_to_client" {
