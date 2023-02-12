@@ -1,5 +1,5 @@
 data "aws_vpc" "ansible_controller_vpc" {
-    id = "vpc-0d15fdcea83ad6549"
+    id = "vpc-0296b63aac0bb5c01"
 }
 
 resource "aws_vpc_peering_connection" "ansible_vpc_peering" {
