@@ -1,5 +1,5 @@
 data "aws_vpc" "ansible_controller_vpc" {
-    id = "vpc-0296b63aac0bb5c01"
+    id = "vpc-0d9a6c2b94b919151"
 }
 
 resource "aws_vpc_peering_connection" "ansible_vpc_peering" {
@@ -28,7 +28,7 @@ resource "aws_route" "route_client_to_controller" {
 
 data "aws_route_table" "route_table_controller" {
   # Either you can import subnet directely and add it here or directly copy the id here
-  subnet_id = "subnet-098eb740761fc9d39"
+  subnet_id = "subnet-0dcd20e66f7523f43"
 }
 
 resource "aws_route" "route_controller_to_client" {
