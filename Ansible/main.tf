@@ -170,47 +170,47 @@ resource "aws_instance" "web-3" {
   }
 }
 
-# resource "aws_instance" "web-4" {
-#   ami                         = var.imagename
-#   instance_type               = var.instance_type
-#   key_name                    = "msi-keypair"
-#   subnet_id                   = aws_subnet.subnet1-public.id
-#   vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]
-#   associate_public_ip_address = true
-#   tags = {
-#     Name       = "Server-4"
-#     Env        = "Prod"
-#     Owner      = "Pavan"
-#     CostCenter = "ABCD"
-#   }
-# }
+resource "aws_instance" "web-4" {
+  ami                         = var.imagename
+  instance_type               = var.instance_type
+  key_name                    = "msi-keypair"
+  subnet_id                   = aws_subnet.subnet1-public.id
+  vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]
+  associate_public_ip_address = true
+  tags = {
+    Name       = "Server-4"
+    Env        = "Prod"
+    Owner      = "Pavan"
+    CostCenter = "ABCD"
+  }
+}
 
-# resource "aws_instance" "web-5" {
-#   ami                         = var.imagename
-#   instance_type               = var.instance_type
-#   key_name                    = "msi-keypair"
-#   subnet_id                   = aws_subnet.subnet2-public.id
-#   vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]
-#   associate_public_ip_address = true
-#   tags = {
-#     Name       = "Server-5"
-#     Env        = "Prod"
-#     Owner      = "Pavan"
-#     CostCenter = "ABCD"
-#   }
-# }
+resource "aws_instance" "web-5" {
+  ami                         = var.imagename
+  instance_type               = var.instance_type
+  key_name                    = "msi-keypair"
+  subnet_id                   = aws_subnet.subnet2-public.id
+  vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]
+  associate_public_ip_address = true
+  tags = {
+    Name       = "Server-5"
+    Env        = "Prod"
+    Owner      = "Pavan"
+    CostCenter = "ABCD"
+  }
+}
 
-# resource "aws_instance" "web-6" {
-#   ami                         = var.imagename
-#   instance_type               = var.instance_type
-#   key_name                    = "msi-keypair"
-#   subnet_id                   = aws_subnet.subnet3-public.id
-#   vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]
-#   associate_public_ip_address = true
-#   tags = {
-#     Name       = "Server-6"
-#     Env        = "Prod"
-#     Owner      = "Pavan"
-#     CostCenter = "ABCD"
-#   }
-# }
+resource "aws_instance" "web-6" {
+  ami                         = var.imagename
+  instance_type               = var.instance_type
+  key_name                    = "msi-keypair"
+  subnet_id                   = aws_subnet.subnet3-public.id
+  vpc_security_group_ids      = ["${aws_security_group.allow_all.id}"]
+  associate_public_ip_address = true
+  tags = {
+    Name       = "Server-6"
+    Env        = "Prod"
+    Owner      = "Pavan"
+    CostCenter = "ABCD"
+  }
+}
