@@ -11,6 +11,9 @@ After deploying load balancer when we access DNS of LB it shows only `8000` port
 
 Now if we want to allow other services/applications to route to port 80, we need to create another load balancer. Here is the catch, suppose if we have 100 applications running we need to create 100 load balancers which **increases cost** also **there is a limit of creating LB for every region** and this will be breached. Hence this is not a feasable solution, but accepted solution is `Ingress Controller`
 
+![Ingress controller](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/ingress-controller.png)
+
+# need to explain the ingress controller part
 There are multiple 3rd party clients [Ingress Controllers](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) are available. Among that we are using [Traefk](https://traefik.io/solutions/docker-swarm-ingress/) 
 
 3. Install [docker visualizer](https://hub.docker.com/r/dockersamples/visualizer/#!) on Leader node
@@ -18,4 +21,25 @@ There are multiple 3rd party clients [Ingress Controllers](https://kubernetes.io
 docker run -it -d -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock dockersamples/visualizer
 ```
 Access it with its public-ip `http://ec2-18-222-60-144.us-east-2.compute.amazonaws.com:8080/`. We can see all the nodes are appeared.
-4. Install [traefik]()
+4. Create a `overlay network` 
+docker network create --driver=overlay traefik-net
+
+# Image and content about traefik needs to add
+Install [traefik] on `leader`
+```bash
+docker service create \
+    --name traefik16 \
+    --constraint=node.role==manager \
+    --publish 80:80 \
+    --publish 9080:8080 \
+    --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock \
+    --network traefik-net \
+    traefik:v1.6 \
+    --docker \
+    --docker.swarmmode \
+    --docker.domain=traefik \
+    --docker.watch \
+    --web
+```
+
+Here on `8000`, `8100` ports applications are running and on `8080` visualizer is running. Hence we created `traefik` service on `9080`.
