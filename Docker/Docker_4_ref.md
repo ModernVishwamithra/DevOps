@@ -5,7 +5,7 @@
 * Write instructions to build a custom dockerfile which consists of python 3.8 as a base image.
 * when we try to enter into conainer
 ```bash
-docker ecec -it myutils:v1 /bin/bash
+docker exec -it myutils:v1 /bin/bash
 ```
 
 It takes you to default location as container-name. To change the default location we use `WORKDIR` 
