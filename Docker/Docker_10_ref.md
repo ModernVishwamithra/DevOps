@@ -34,7 +34,7 @@ it will give response this time.
 
 By using NACL or SecurityGroup we can restrict allow remote host like CI/CD like Jenkins or Azure DevOps to access Docker Host and deny all others. Without disturbing security group as we have allowed all traffic, we can set rules in NACL. Give the private ip of `ansibleadmin` server in NACL rule to allow.
 
-![docker-host-nacl](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/docker-host-nacl.png)
+![docker-host-nacl](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/docker-host-nacl.jpeg)
 
 Now if we try to connect docker host from `ansibleadmin` it will connect, if we try to connect from anyother server apart from docker cluster it won't connect.
 
@@ -56,21 +56,21 @@ We have 6 docker hosts in all containers are running,(here i have taken only 2 f
 
 * pause - assume that in `docker node 5` we want to do something and we don't want accept any new applications then we pause the node. Still the existing applications will be running. In kubernetes it is called `cordon`
 When we scale the service to `2` before pausing the node
-![docker-node-pause-1](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/docker-node-pause-1.png)
+![docker-node-pause-1](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/docker-node-pause-1.jpeg)
 
 ```bash
 docker service scale nginx001=2
 docker node update --availability pause ip-10-2-12-234
 docker service scale nginx001=5
 ```
-![docker-node-pause-2](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/docker-node-pause-2.png)
+![docker-node-pause-2](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/docker-node-pause-2.jpeg)
 Once scaled up to 5, the `paused` node doesn't accepted the new containers, but still its running exixting container.
 
 * drain - When we don't want to run any containers, or we want to reschedule the tasks we use `drain`
 ```bash
 docker node update --availability drain ip-10-2-12-234
 ```
-![docker-node-drain](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/docker-node-drain.png)
+![docker-node-drain](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/docker-node-drain.jpeg)
 
 We observe that drained worker node gets container deleted from it and added to another node to make replicas=5
 
@@ -143,7 +143,10 @@ docker service update --image sreeharshav/testcontainer:v1 nginx
 9.	Edit the service1 listener which is TCP80 and redirect to port TCP 443.
 10.	Check the website is reachable on service2 and all old users also redirected to the new service.
 
-**Method 2**:  BLUE-GREEN-USING-TRAEFIK
+**Method 2**: Blue green deployment
+
+BLUE-GREEN-USING-TRAEFIK
+
 Create two services with `blue` and `green`, remove the `blue` and add `green` using service update
 docker service create \
 	--name blue \
@@ -180,7 +183,8 @@ docker service update --label-rm 'traefik.frontend.rule=Host:green.awstelugu.xyz
 * When everythings works good in `green` environment, we will flip(replace) the DNS record `green.devopsb27.com` with `www.devopsb27.com`. Now `green` environemnt becomes `new blue` environment. We will keep `old blue` enviroment for few days (depends), because if any probelm occured in `new blue` environment we can roll back to `old blue` enviroment. If everything works well after some days we decommission the `old blue` enviroment.
 ![blue-green-deployment](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/blue-green-deployment.gif)
 
-3. Canary deployment
+3. **Canary deployment**
+
 Just like `blue` and `green` deployment with slight changes. 100 % of Traffic is actually going to `blue`, When we have tested `green` environment and working fine, we allow `10%` of traffic to `green` and `90%` of traffic to `blue` initially. Slowly we move traffic to `green` to make it 100%. In this method we can easily roll back if any problems occured in `green` environment
 
 ![canary-deployment](https://github.com/ModernVishwamithra/DevOps/blob/main/Docker/images/canary-deployment.gif)
