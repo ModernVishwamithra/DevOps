@@ -6,7 +6,7 @@
 * Once finished, update to github and pull it on the instance. 
 * Run docker build coomand `docker build -t pavan/nginx:v1 .` to build the custom image.
 * When the docker build is running, additional, read-only layers with auto assigned id's will be created. 
-* Instructions `RUN`. ``COPY`, `RUN` commands are responsible to create more layers [refer this article for better understanding](https://bobcares.com/blog/docker-layers-explained/#:~:text=The%20Docker%20layers%20are%20the%20fundamental%20building%20blocks,instructions%20create%20a%20layer%20such%3A%20RUN%2C%20COPY%2C%20ADD.)
+* Instructions `RUN`. `COPY`, `ADD` commands are responsible to create more layers [refer this article for better understanding](https://bobcares.com/blog/docker-layers-explained/#:~:text=The%20Docker%20layers%20are%20the%20fundamental%20building%20blocks,instructions%20create%20a%20layer%20such%3A%20RUN%2C%20COPY%2C%20ADD.)
 * Once build is successfull, run the docker command
     - docker run -it pavan/Nginx:v1 
 * It creates a container, but it wont run the container initially(we havedn't added CMD/ENTRYPOINT command). It lets you in to tht conainer image and check the versions of the applications installed successfully or not.
