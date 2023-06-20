@@ -16,7 +16,7 @@ To understand the docker, we need to look into the application architecture type
 **Limitations* - Development sprawl, Exponential infrastructure costs, Added organizational overhead, Debugging challenges, Lack of standardization, Lack of clear ownership
 
 ----------
-# Conainers
+# Containers
 
 Containers are packages of software that contain all of the necessary elements to run in any environment. In this way, containers virtualize the operating system and run anywhere, from a private data center to the public cloud or even on a developer’s personal laptop.
 
