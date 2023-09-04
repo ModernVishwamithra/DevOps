@@ -117,13 +117,13 @@ http://ec2-34-230-65-218.compute-1.amazonaws.com:8080/restart, it will show the 
 ```bash
 #wget http://secondaty-jenkins-public-dns/ip:8080/jnlpJars/jenkins-cli.jar
 cd /var/lib/jenkins/
-wget http://ec2-52-23-179-146.compute-1.amazonaws.com:8080/jnlpJars/jenkins-cli.jar
+wget http://ec2-54-234-241-110.compute-1.amazonaws.com:8080/jnlpJars/jenkins-cli.jar
 ```
 Now try to build more jobs in master-1, see whether it was reflected when master-2 refresh. It wont reflect. 
 20. To reflect, we need to run the following command by providing api token and username as followss
 ```bash
 #java -jar /var/lib/jenkins/jenkins-cli.jar -s http://<secondary-jenkins-publicip>:8080 -auth reloadconfig:token reload-configuration
-java -jar /var/lib/jenkins/jenkins-cli.jar -s http://ec2-52-23-179-146.compute-1.amazonaws.com:8080 -auth reloadconfig:11aa696744fc002cb3b9894b0442342b7d reload-configuration
+java -jar /var/lib/jenkins/jenkins-cli.jar -s http://ec2-54-234-241-110.compute-1.amazonaws.com:8080 -auth reloadconfig:11aa696744fc002cb3b9894b0442342b7d reload-configuration
 ```
 21. When we run the above command everytime, jenkins master-2 gets updated, instead of running the command manually we can keept this command in cron expression, so that every minute it will run
 ```bash

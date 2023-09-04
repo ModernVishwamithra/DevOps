@@ -1,0 +1,42 @@
+{
+    "_comment": "Create Aws AMI with Ubuntu 20.04",
+    "variables": {
+        "region": "",
+        "source_ami": "",
+        "instance_type": "",
+        "vpc_id": "",
+        "subnet_id": ""
+    },
+    "_comment1": "packer build -var \"aws_secret_key=foo\" packer.json",
+    "_comment2": "packer build -var-file packer-vars.json packer.json",
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "region": "{{user `region`}}",
+            "source_ami": "{{user `source_ami`}}",
+            "instance_type": "{{user `instance_type`}}",
+            "ssh_username": "ubuntu",
+            "ami_name": "Jenkins-Build-{{isotime | clean_resource_name}}",
+            "vpc_id": "{{user `vpc_id`}}",
+            "subnet_id": "{{user `subnet_id`}}",
+            "tags": {
+                "Name": "Jenkins-Build-{{isotime | clean_resource_name}}"
+            }
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sleep 15",
+                "sudo useradd -m ansibleadmin --shell /bin/bash",
+                "sudo mkdir -p /home/ansibleadmin/.ssh",
+                "sudo chown -R ansibleadmin /home/ansibleadmin/",
+                "sudo touch /home/ansibleadmin/.ssh/authorized_keys",
+                "sudo usermod -aG sudo ansibleadmin",
+                "echo 'ansibleadmin ALL=(ALL) NOPASSWD: ALL' | sudo tee -a /etc/sudoers",
+                "echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQoXqWrZGnOuJEceBk8q74Aw/gD0ko37j41mKE35WRTabpTVJhIB8ksdYLfJQdRgKatoEhFW50fJVqiYW8LE3tySc0ibrNV5mGWj+Crw1UmHRGeIwY6tdkbg1QIzA7JD/Kz+LiUcRyTbEuC6OXaxA8I751AQ5xuKh1nCnN6rjL3pmGfViUTJBETzgttxHYQOoWeYNjZ306kP8cjqQjvRC5ejQoTpf3jSmOFGYw+CwWc6sA2taBjWVJF72f5wgC7KbIC8cVfzUNtSUmKO5mBGF9ywc/ab5cAWLViVhUTrCQJmSCFoRh/vMo5+y1pK8V6nBJF4k/Kw+tEIBkPBxizAg09zyPo5y2Sms78WLELE5m0Ob6VZdBqy+9UeHVgDDRF4RRMxp1xhOEC+1mrGyqBU4r70+VBo0n+zPkmTF8FoUDCt7wF8XKtTFL7+H+g0XxYjuFlI4gwfIlg3sD8Q51lYtCravqOSBNQh/FvklrNVh2wq8HUV39o3hSZ5WEjP9+Omc= pavan@DESKTOP-TTAFTCU' | sudo tee /home/ansibleadmin/.ssh/authorized_keys"
+            ]
+        }
+    ]
+}
